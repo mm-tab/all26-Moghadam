@@ -2,8 +2,8 @@ package org.team100.lib.state;
 
 import java.util.Objects;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.interpolation.Interpolatable;
+import org.wpilib.math.interpolation.Interpolatable;
+import org.wpilib.math.util.MathUtil;
 
 /**
  * One-dimensional system state, used for system modeling. The state only
@@ -74,9 +74,8 @@ public record StateR1(double x, double v) implements Interpolatable<StateR1> {
     @Override
     public StateR1 interpolate(StateR1 endValue, double t) {
         return new StateR1(
-                MathUtil.interpolate(x, endValue.x, t),
-                MathUtil.interpolate(v, endValue.v, t));
-
+                MathUtil.lerp(x, endValue.x, t),
+                MathUtil.lerp(v, endValue.v, t));
     }
 
     @Override

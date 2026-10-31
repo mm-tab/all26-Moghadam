@@ -20,16 +20,16 @@ import org.team100.lib.motor.sim.SimulatedMotor;
 import org.team100.lib.music.Music;
 import org.team100.lib.music.Player;
 import org.team100.lib.sensor.distance.LaserCan100;
+import org.team100.lib.util.CanBusId;
 import org.team100.lib.util.CanId;
-
-import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.framework.RobotBase;
 
 /**
  * The manipulator from the Calgames robot in 2025
  */
+@SuppressWarnings("unused")
 public class Manipulator extends SubsystemBase implements Music {
 
     private final BooleanLogger coralLogger;
@@ -40,7 +40,6 @@ public class Manipulator extends SubsystemBase implements Music {
     private final LinearMechanism m_rightMech;
     private final LinearMechanism m_algaeMech;
     private final LaserCan100 m_rightLaser;
-    @SuppressWarnings("unused")
     private final LaserCan100 m_frontLaser;
     private final LaserCan100 m_backLaser;
     private final LaserCan100 m_leftLaser;
@@ -57,21 +56,20 @@ public class Manipulator extends SubsystemBase implements Music {
         if (RobotBase.isReal()) {
             // Set specific parameters for the competition robot
             KrakenX60Motor leftMotor = new KrakenX60Motor(
-                    leftMotorLog, currentLog, new CanId(19),
-                    NeutralMode100.COAST,
-                    MotorPhase.FORWARD,
+                    leftMotorLog, currentLog, new CanId(19), new CanBusId(0),
+                    NeutralMode100.COAST, MotorPhase.FORWARD,
                     new CurrentLimit(40, 40),
                     new Friction(0.900, 0.900, 0.0, 0.5),
                     PIDConstants.zero());
             KrakenX60Motor rightMotor = new KrakenX60Motor(
-                    rightMotorLog, currentLog, new CanId(20), NeutralMode100.COAST,
-                    MotorPhase.REVERSE,
+                    rightMotorLog, currentLog, new CanId(20), new CanBusId(0),
+                    NeutralMode100.COAST, MotorPhase.REVERSE,
                     new CurrentLimit(40, 40),
                     new Friction(0.900, 0.900, 0.0, 0.5),
                     PIDConstants.zero());
             KrakenX60Motor algaeMotor = new KrakenX60Motor(
-                    algaeMotorLog, currentLog, new CanId(21), NeutralMode100.COAST,
-                    MotorPhase.FORWARD,
+                    algaeMotorLog, currentLog, new CanId(21), new CanBusId(0),
+                    NeutralMode100.COAST, MotorPhase.FORWARD,
                     new CurrentLimit(120, 120),
                     new Friction(0.900, 0.900, 0.0, 0.5),
                     PIDConstants.zero());
@@ -141,7 +139,8 @@ public class Manipulator extends SubsystemBase implements Music {
 
     public boolean hasCoral() {
         if (RobotBase.isReal()) {
-            return coralIsClose(m_backLaser);
+            // return coralIsClose(m_backLaser);
+            return false;
         }
         return false;
     }
@@ -164,13 +163,13 @@ public class Manipulator extends SubsystemBase implements Music {
             m_algaeMech.setDutyCycle(-1);
         } else {
             m_algaeMech.setDutyCycle(-1);
-            if (coralIsClose(m_leftLaser)) {
-                m_leftMech.setDutyCycle(0.5);
-                m_rightMech.setDutyCycle(-0.5);
-            } else {
-                m_leftMech.setDutyCycle(-0.5);
-                m_rightMech.setDutyCycle(0.5);
-            }
+            // if (coralIsClose(m_leftLaser)) {
+            // m_leftMech.setDutyCycle(0.5);
+            // m_rightMech.setDutyCycle(-0.5);
+            // } else {
+            // m_leftMech.setDutyCycle(-0.5);
+            // m_rightMech.setDutyCycle(0.5);
+            // }
         }
     }
 
@@ -183,7 +182,9 @@ public class Manipulator extends SubsystemBase implements Music {
     }
 
     public boolean hasCoralSideways() {
-        return coralIsClose(m_leftLaser) && coralIsClose(m_rightLaser);
+        // TODO: for 2027
+        // return coralIsClose(m_leftLaser) && coralIsClose(m_rightLaser);
+        return false;
     }
 
     public void stopMotors() {
@@ -200,7 +201,7 @@ public class Manipulator extends SubsystemBase implements Music {
         return m_algaeMotor.getStatorCurrent() > 50;
     }
 
-    /////////////////////////////////////////////////
+    //////////////////////////////////////////
     //
     // COMMANDS
 
@@ -242,7 +243,7 @@ public class Manipulator extends SubsystemBase implements Music {
         return run(this::ejectCenterBack);
     }
 
-    //////////////////////////////////////////////////
+    ///////////////////////////////////////////
 
     /**
      * Set high current limits.
@@ -277,12 +278,12 @@ public class Manipulator extends SubsystemBase implements Music {
     private void log() {
         coralLogger.log(this::hasCoral);
     }
-    ///////////////////////////////////////////////
+    ////////////////////////////////////////
 
-    private static boolean coralIsClose(LaserCan100 sensor) {
-        Measurement m = sensor.getMeasurement();
-        if (m == null)
-            return false;
-        return m.distance_mm < NEAR;
-    }
+    // private static boolean coralIsClose(LaserCan100 sensor) {
+    // Measurement m = sensor.getMeasurement();
+    // if (m == null)
+    // return false;
+    // return m.distance_mm < NEAR;
+    // }
 }

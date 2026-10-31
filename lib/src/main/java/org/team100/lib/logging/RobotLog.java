@@ -2,9 +2,10 @@ package org.team100.lib.logging;
 
 import org.team100.lib.logging.LoggerFactory.BooleanLogger;
 import org.team100.lib.logging.LoggerFactory.DoubleLogger;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotController;
+import org.wpilib.driverstation.MatchState;
+import org.wpilib.driverstation.RobotState;
+import org.wpilib.framework.RobotBase;
+import org.wpilib.system.RobotController;
 
 /** Robot-level logs, these used to pollute Robot.java. */
 public class RobotLog {
@@ -23,10 +24,10 @@ public class RobotLog {
         m_totalCurrentLog = new TotalCurrentLog(robotLogger);
 
         LoggerFactory dsLog = robotLogger.name("DriverStation");
-        m_log_ds_MatchTime = dsLog.doubleLogger(Level.TRACE, "MatchTime");
-        m_log_ds_AutonomousEnabled = dsLog.booleanLogger(Level.TRACE, "AutonomousEnabled");
-        m_log_ds_TeleopEnabled = dsLog.booleanLogger(Level.TRACE, "TeleopEnabled");
-        m_log_ds_FMSAttached = dsLog.booleanLogger(Level.TRACE, "FMSAttached");
+        m_log_ds_MatchTime = dsLog.doubleLogger(Level.COMP, "MatchTime");
+        m_log_ds_AutonomousEnabled = dsLog.booleanLogger(Level.COMP, "AutonomousEnabled");
+        m_log_ds_TeleopEnabled = dsLog.booleanLogger(Level.COMP, "TeleopEnabled");
+        m_log_ds_FMSAttached = dsLog.booleanLogger(Level.COMP, "FMSAttached");
         LogPoller.register(this::log);
     }
 
@@ -39,10 +40,10 @@ public class RobotLog {
         m_jvmLogger.logGarbageCollectors();
         m_jvmLogger.logMemoryPools();
         m_jvmLogger.logMemoryUsage();
-        m_log_ds_MatchTime.log(DriverStation::getMatchTime);
-        m_log_ds_AutonomousEnabled.log(DriverStation::isAutonomousEnabled);
-        m_log_ds_TeleopEnabled.log(DriverStation::isTeleopEnabled);
-        m_log_ds_FMSAttached.log(DriverStation::isFMSAttached);
+        m_log_ds_MatchTime.log(MatchState::getMatchTime);
+        m_log_ds_AutonomousEnabled.log(RobotBase::isAutonomousEnabled);
+        m_log_ds_TeleopEnabled.log(RobotBase::isTeleopEnabled);
+        m_log_ds_FMSAttached.log(RobotState::isFMSAttached);
         m_log_voltage.log(RobotController::getBatteryVoltage);
         m_totalCurrentLog.log();
     }

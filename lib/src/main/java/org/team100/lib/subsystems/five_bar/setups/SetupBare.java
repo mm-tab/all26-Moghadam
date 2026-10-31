@@ -6,7 +6,7 @@ import org.team100.lib.logging.TotalCurrentLog;
 import org.team100.lib.subsystems.five_bar.FiveBarBare;
 import org.team100.lib.visualization.FiveBarVisualization;
 
-import edu.wpi.first.wpilibj.XboxController;
+import org.wpilib.driverstation.Gamepad;
 
 public class SetupBare implements Runnable {
     private final FiveBarBare m_fiveBar;
@@ -14,7 +14,7 @@ public class SetupBare implements Runnable {
 
     public SetupBare(LoggerFactory log, Scenario scenario) {
         TotalCurrentLog currentLog = new TotalCurrentLog(log);
-        XboxController controller = new XboxController(0);
+        Gamepad controller = new Gamepad(0);
         m_fiveBar = new FiveBarBare(log, currentLog, scenario);
         m_viz = new FiveBarVisualization(scenario, m_fiveBar::getJointPositions);
 

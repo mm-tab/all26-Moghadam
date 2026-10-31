@@ -7,8 +7,7 @@ import org.team100.lib.logging.Logging;
 import org.team100.lib.logging.TotalCurrentLog;
 import org.team100.lib.subsystems.discus.DiscusServo;
 import org.team100.lib.visualization.ArmVisualization;
-
-import edu.wpi.first.wpilibj.XboxController;
+import org.wpilib.driverstation.Gamepad;
 
 /** Adds profiled motion. */
 public class SetupServo implements Runnable {
@@ -19,7 +18,7 @@ public class SetupServo implements Runnable {
 
     public SetupServo(TotalCurrentLog currentLog) {
         final LoggerFactory logger = Logging.root();
-        XboxController controller = new XboxController(0);
+        Gamepad controller = new Gamepad(0);
 
         m_discus = new DiscusServo(logger, currentLog);
         m_viz = new ArmVisualization(m_discus::getPosition, "discus", 0);
@@ -28,19 +27,21 @@ public class SetupServo implements Runnable {
 
         // These bindings are remembered by the trigger event loop, so we don't need to
         // retain them.
-        // whileTrue(controller::getAButton, m_discus.home());
-        // onTrue(controller::getBButton, m_discus.zero()
-        whileTrue(controller::getXButton,
+        // whileTrue(controller::getAButton,
+        // m_discus.home());
+        // onTrue(controller::getBButton,
+        // m_discus.zero());
+        whileTrue(controller::getWestFaceButton,
                 m_discus.position(() -> 3));
-        whileTrue(controller::getYButton,
+        whileTrue(controller::getNorthFaceButton,
                 m_discus.position(() -> -8));
         whileTrue(controller::getRightBumperButton,
                 m_discus.position(() -> 12));
         whileTrue(controller::getLeftBumperButton,
                 m_discus.position(() -> -12));
-        whileTrue(controller::getAButton,
+        whileTrue(controller::getSouthFaceButton,
                 m_discus.position(() -> 20));
-        whileTrue(controller::getBButton,
+        whileTrue(controller::getEastFaceButton,
                 m_discus.position(() -> -20));
     }
 

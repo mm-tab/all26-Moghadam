@@ -1,6 +1,6 @@
 package frc.robot;
 
-import static frc.robot.TriggerUtil.whileTrue;
+import static org.team100.lib.util.TriggerUtil.whileTrue;
 
 import org.team100.lib.coherence.Cache;
 import org.team100.lib.coherence.Takt;
@@ -11,10 +11,9 @@ import org.team100.lib.logging.LogPoller;
 import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.logging.Logging;
 import org.team100.lib.util.Startup;
-
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.wpilib.command2.CommandScheduler;
+import org.wpilib.framework.TimedRobot;
+import org.wpilib.networktables.NetworkTableInstance;
 
 public class Robot extends TimedRobot {
     private final Machinery m_machinery;
@@ -22,7 +21,9 @@ public class Robot extends TimedRobot {
     private final DriverXboxControl driver = new DriverXboxControl(logger, 0);
 
     public Robot() {
+
         Startup.start();
+
         m_machinery = new Machinery();
     }
 
@@ -53,5 +54,4 @@ public class Robot extends TimedRobot {
         whileTrue(driver::a, m_machinery.m_Climber.setClimb3());
         whileTrue(driver::b, m_machinery.m_Climber.setClimb0());
     }
-
 }

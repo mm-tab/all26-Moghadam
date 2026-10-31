@@ -5,8 +5,7 @@ import java.util.function.Supplier;
 
 import org.team100.lib.sensor.gyro.Gyro;
 import org.team100.lib.subsystems.swerve.module.state.SwerveModulePositions;
-
-import edu.wpi.first.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Rotation2d;
 
 /**
  * Read all pose estimate inputs at once and call the gardener.

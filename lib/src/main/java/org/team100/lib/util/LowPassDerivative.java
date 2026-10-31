@@ -1,8 +1,7 @@
 package org.team100.lib.util;
 
 import org.team100.lib.framework.TimedRobot100;
-
-import edu.wpi.first.math.filter.LinearFilter;
+import org.wpilib.math.filter.LinearFilter;
 
 /**
  * We often need to find the derivative of some signal, e.g. given a series of

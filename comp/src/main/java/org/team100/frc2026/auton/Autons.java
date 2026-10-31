@@ -8,8 +8,9 @@ import org.team100.lib.config.AutonChooser;
 import org.team100.lib.controller.se2.ControllerSE2;
 import org.team100.lib.controller.se2.FullStateControllerSE2;
 import org.team100.lib.logging.LoggerFactory;
+import org.wpilib.command2.Command;
 
-import edu.wpi.first.wpilibj2.command.Command;
+
 
 /**
  * Populates the Auton chooser with all available autons.
@@ -133,6 +134,26 @@ public class Autons implements AutoCloseable {
                 controller,
                 machinery));
         m_autonChooser.add(new MajorDefenseRTrench(
+                log,
+                machinery.m_swerveKinodynamics,
+                controller,
+                machinery));
+         m_autonChooser.add(new CenterHalfSweepAuton(
+                log,
+                machinery.m_swerveKinodynamics,
+                controller,
+                machinery));
+        m_autonChooser.add(new RightHalfSweepAuton(
+                log,
+                machinery.m_swerveKinodynamics,
+                controller,
+                machinery));
+        m_autonChooser.add(new RightBumpHalfSweepAuton(
+                log,
+                machinery.m_swerveKinodynamics,
+                controller,
+                machinery));
+            m_autonChooser.add(new CenterPreloadedAuton(
                 log,
                 machinery.m_swerveKinodynamics,
                 controller,

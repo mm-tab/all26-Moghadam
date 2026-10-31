@@ -3,11 +3,10 @@ package org.team100.frc2025.indicator;
 import org.team100.frc2025.Climber.ClimberIntake;
 import org.team100.frc2025.grip.Manipulator;
 import org.team100.lib.coherence.Takt;
-
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.RobotState;
-import edu.wpi.first.wpilibj.util.Color;
+import org.wpilib.driverstation.RobotState;
+import org.wpilib.hardware.led.AddressableLED;
+import org.wpilib.hardware.led.AddressableLEDBuffer;
+import org.wpilib.util.Color;
 
 /**
  * An LED strip used as a signal light.
@@ -57,14 +56,14 @@ public class LEDIndicator {
             ClimberIntake climberIntake) {
         m_led = new AddressableLED(0);
         m_led.setLength(LENGTH);
-        m_greenBuffer = fill(Color.kGreen);
-        m_tealBuffer = fill(Color.kTeal);
-        m_whiteBuffer = fill(Color.kWhiteSmoke);
-        m_orangeBuffer = fill(Color.kOrangeRed);
-        m_redBuffer = fill(Color.kRed);
-        m_blackBuffer = fill(Color.kBlack);
+        m_greenBuffer = fill(Color.GREEN);
+        m_tealBuffer = fill(Color.TEAL);
+        m_whiteBuffer = fill(Color.WHITE_SMOKE);
+        m_orangeBuffer = fill(Color.ORANGE_RED);
+        m_redBuffer = fill(Color.RED);
+        m_blackBuffer = fill(Color.BLACK);
         m_led.setData(m_redBuffer);
-        m_led.start();
+        // m_led.start();
         m_manipulator = manipulator;
         m_climberIntake = climberIntake;
     }
@@ -107,7 +106,7 @@ public class LEDIndicator {
         m_led.close();
     }
 
-    ///////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
 
     /**
      * Handles blink timing and returns true if blink state changed

@@ -5,8 +5,7 @@ import static org.team100.lib.util.TriggerUtil.whileTrue;
 import org.team100.lib.hid.DriverXboxControl;
 import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.subsystems.swerve.SwerveDriveSubsystem;
-
-import edu.wpi.first.math.geometry.Translation2d;
+import org.wpilib.math.geometry.Translation2d;
 
 /**
  * This is an example of what you'd put in RobotContainer to use some of the

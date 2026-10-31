@@ -22,6 +22,7 @@ import org.team100.lib.subsystems.swerve.kinodynamics.SwerveKinodynamicsSwerveOn
 import org.team100.lib.subsystems.swerve.module.SwerveModuleCollection;
 import org.team100.lib.subsystems.swerve.module.SwerveModulesPractice;
 import org.team100.lib.subsystems.swerve.module.SwerveModulesSim;
+import org.team100.lib.subsystems.swerve.module.SwerveModulesSim;
 import org.team100.lib.targeting.CachedSolution;
 import org.team100.lib.targeting.ProxySolver;
 import org.team100.lib.targeting.Targets;
@@ -29,14 +30,14 @@ import org.team100.lib.uncertainty.IsotropicNoiseSE2;
 import org.team100.lib.uncertainty.NoisyPose2d;
 import org.team100.lib.visualization.RobotPoseVisualization;
 import org.team100.lib.visualization.TrajectoryVisualization;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.Commands;
+import org.wpilib.driverstation.MatchState;
+import org.wpilib.framework.RobotBase;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Translation2d;
+import org.wpilib.math.geometry.Twist2d;
 
 /**
  * This should contain all the hardware of the robot: all the subsystems etc
@@ -58,7 +59,7 @@ public class Machinery {
     public Machinery(LoggerFactory logger, LoggerFactory fieldLogger, TotalCurrentLog currentLog) {
         LoggerFactory driveLog = logger.name("Drive");
 
-        ////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////
         //
         // DRIVETRAIN
         //
@@ -91,11 +92,11 @@ public class Machinery {
                 estimate,
                 swerveLocal);
         new AprilTagVisualizer(
-                driveLog, fieldLogger, m_drive::getState, layout, DriverStation::getAlliance);
+                driveLog, fieldLogger, m_drive::getState, layout, MatchState::getAlliance);
         new RobotPoseVisualization(
                 fieldLogger, () -> m_drive.getState(), "robot");
 
-        ////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////
         //
         // TARGETING
         //
@@ -117,18 +118,18 @@ public class Machinery {
 
         m_targets = new Targets(driveLog, fieldLogger, 0.2, (t) -> m_drive.getState(t));
 
-        ////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////
         //
         // SUBSYSTEMS
         //
 
-        ////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////
         //
         // VISUALIZATIONS
         //
         m_trajectoryViz = new TrajectoryVisualization(fieldLogger);
 
-        ////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////
         //
         // INDICATOR
         //

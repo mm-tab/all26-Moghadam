@@ -17,8 +17,7 @@ import org.team100.lib.subsystems.swerve.kinodynamics.SwerveKinodynamicsFactory;
 import org.team100.lib.subsystems.swerve.module.SwerveModuleCollection;
 import org.team100.lib.subsystems.swerve.module.state.SwerveModuleStates;
 import org.team100.lib.testing.Timeless;
-
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import org.wpilib.math.kinematics.ChassisVelocities;
 
 class SwerveLocalTest implements Timeless {
     private static final double DELTA = 0.001;
@@ -32,7 +31,7 @@ class SwerveLocalTest implements Timeless {
         SwerveModuleCollection collection = SwerveModuleCollection.get(
                 logger, currentLog, new CurrentLimit(10, 20), new CurrentLimit(10, 20));
         SwerveLocal swerveLocal = new SwerveLocal(logger, swerveKinodynamics, collection);
-        swerveLocal.setChassisSpeeds(new ChassisSpeeds(), ChassisAcceleration.ZERO);
+        swerveLocal.setChassisVelocities(new ChassisVelocities(), ChassisAcceleration.ZERO);
         swerveLocal.stop();
         swerveLocal.setRawModuleStates(
                 SwerveModuleStates.ZERO, SwerveEffort.ZERO);

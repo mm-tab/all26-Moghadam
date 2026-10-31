@@ -2,18 +2,18 @@ package org.team100.lib.util;
 
 import org.team100.lib.config.Identity;
 import org.team100.lib.experiments.Experiments;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.WPILibVersion;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.wpilib.command2.CommandScheduler;
+import org.wpilib.driverstation.internal.DriverStationBackend;
+import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.system.RobotController;
+import org.wpilib.system.WPILibVersion;
 
 /** Stuff we always do when the robot starts. */
 public class Startup {
     public static void start() {
         // Print TEAM 100.
         Banner.printBanner();
+
         // Start the Redux event loop. This is really
         // only needed if you're doing setup.
         // CanandEventLoop.getInstance();
@@ -28,14 +28,14 @@ public class Startup {
         // Only works on RoboRIO 2.0.
         // TODO: turn this back on after it works on Systemcore
         // RobotController.setBrownoutVoltage(5.5);
-        // Stop complaining in the log.
-        DriverStation.silenceJoystickConnectionWarning(true);
         // Show the experiment picker on glass.
         Experiments.INSTANCE.show();
         // Show what the scheduler is doing.
         SmartDashboard.putData(CommandScheduler.getInstance());
         // Set the period to forever, to make the watchdog shut up.
         CommandScheduler.getInstance().setPeriod(100);
+        // Make the joystick complainer shut up.
+        DriverStationBackend.silenceJoystickConnectionWarning(true);
     }
 
 }

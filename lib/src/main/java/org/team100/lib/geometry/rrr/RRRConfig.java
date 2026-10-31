@@ -2,12 +2,12 @@ package org.team100.lib.geometry.rrr;
 
 import java.util.List;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
+import org.team100.lib.util.Math100;
+import org.wpilib.math.linalg.Matrix;
+import org.wpilib.math.linalg.VecBuilder;
+import org.wpilib.math.linalg.Vector;
+import org.wpilib.math.numbers.N1;
+import org.wpilib.math.numbers.N3;
 
 /**
  * 3R config
@@ -56,9 +56,9 @@ public record RRRConfig(double q1, double q2, double q3) {
     /** Interpolate in configuration space, never crossing pi. */
     public static RRRConfig interpolate(RRRConfig a, RRRConfig b, double s) {
         return new RRRConfig(
-                MathUtil.interpolate(a.q1(), b.q1(), s),
-                MathUtil.interpolate(a.q2(), b.q2(), s),
-                MathUtil.interpolate(a.q3(), b.q3(), s));
+                Math100.interpolate(a.q1(), b.q1(), s),
+                Math100.interpolate(a.q2(), b.q2(), s),
+                Math100.interpolate(a.q3(), b.q3(), s));
     }
 
     public Vector<N3> toVector() {
@@ -114,4 +114,5 @@ public record RRRConfig(double q1, double q2, double q3) {
     public String toString() {
         return String.format("%6.3f, %6.3f, %6.3f", q1, q2, q3);
     }
+
 }

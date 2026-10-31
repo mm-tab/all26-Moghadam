@@ -2,12 +2,12 @@ package org.team100.lib.geometry.rr;
 
 import java.util.List;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N2;
+import org.wpilib.math.linalg.Matrix;
+import org.wpilib.math.linalg.VecBuilder;
+import org.wpilib.math.linalg.Vector;
+import org.wpilib.math.numbers.N1;
+import org.wpilib.math.numbers.N2;
+import org.wpilib.math.util.MathUtil;
 
 /**
  * Joint configuration for the RR example.
@@ -53,8 +53,8 @@ public record RRConfig(double q1, double q2) {
     public static RRConfig interpolate(RRConfig a, RRConfig b, double d) {
         double s = d / a.euclideanDistance(b);
         return new RRConfig(
-                MathUtil.interpolate(a.q1(), b.q1(), s),
-                MathUtil.interpolate(a.q2(), b.q2(), s));
+                MathUtil.lerp(a.q1(), b.q1(), s),
+                MathUtil.lerp(a.q2(), b.q2(), s));
     }
 
     /**

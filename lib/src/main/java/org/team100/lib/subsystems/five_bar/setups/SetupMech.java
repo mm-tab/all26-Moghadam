@@ -9,8 +9,7 @@ import org.team100.lib.logging.TotalCurrentLog;
 import org.team100.lib.subsystems.five_bar.FiveBarMech;
 import org.team100.lib.subsystems.five_bar.Pen;
 import org.team100.lib.visualization.FiveBarVisualization;
-
-import edu.wpi.first.wpilibj.XboxController;
+import org.wpilib.driverstation.Gamepad;
 
 public class SetupMech implements Runnable {
     private final double CONTROL_SCALE = 0.1;
@@ -20,7 +19,7 @@ public class SetupMech implements Runnable {
 
     public SetupMech(LoggerFactory log, Scenario scenario) {
         TotalCurrentLog currentLog = new TotalCurrentLog(log);
-        XboxController controller = new XboxController(0);
+        Gamepad controller = new Gamepad(0);
 
         m_fiveBar = new FiveBarMech(log, currentLog, scenario);
         m_pen = new Pen();
@@ -32,16 +31,16 @@ public class SetupMech implements Runnable {
         // These bindings are remembered by the trigger event loop, so we don't need to
         // retain them.
         // button 1, "z" in the sim
-        whileTrue(controller::getAButton,
+        whileTrue(controller::getSouthFaceButton,
                 m_fiveBar.home());
         // button 2, "x" in the sim
-        onTrue(controller::getBButton,
+        onTrue(controller::getEastFaceButton,
                 m_fiveBar.zero());
         // button 3, "c" in the sim
-        onTrue(controller::getXButton,
+        onTrue(controller::getWestFaceButton,
                 m_pen.down());
         // button 4, "v" in the sim.
-        onTrue(controller::getYButton,
+        onTrue(controller::getNorthFaceButton,
                 m_pen.up());
     }
 

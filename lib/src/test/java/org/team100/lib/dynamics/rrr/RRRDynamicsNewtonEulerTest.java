@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.team100.lib.geometry.rrr.RRRAcceleration;
 import org.team100.lib.geometry.rrr.RRRConfig;
 import org.team100.lib.geometry.rrr.RRRVelocity;
-
-import edu.wpi.first.math.VecBuilder;
+import org.wpilib.math.linalg.VecBuilder;
 
 public class RRRDynamicsNewtonEulerTest {
     private static final double DELTA = 1e-3;

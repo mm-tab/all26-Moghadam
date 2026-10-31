@@ -20,11 +20,11 @@ import org.team100.lib.reference.r1.ReferenceR1;
 import org.team100.lib.sensor.position.incremental.IncrementalEncoder;
 import org.team100.lib.servo.AngularPositionServo;
 import org.team100.lib.servo.OutboardAngularPositionServo;
+import org.team100.lib.util.CanBusId;
 import org.team100.lib.util.CanId;
-
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.framework.RobotBase;
 
 /**
  * Similar to RotaryPositionSubsystem1d but uses outboard positional control,
@@ -67,6 +67,7 @@ public class OutboardRotaryPositionSubsystem extends SubsystemBase {
                     log,
                     currentLog,
                     new CanId(0),
+                    new CanBusId(0),
                     NeutralMode100.BRAKE,
                     MotorPhase.FORWARD,
                     new CurrentLimit(10, 10), // Stator current limit, amps

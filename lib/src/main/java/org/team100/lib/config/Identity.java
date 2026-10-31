@@ -3,8 +3,8 @@ package org.team100.lib.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.RobotController;
+import org.team100.lib.framework.SerialNumber;
+import org.wpilib.framework.RobotBase;
 
 /*
  * Represents a specific RoboRIO, as a key for configurations.
@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.RobotController;
  * Note that the ID string may change when you reflash the RoboRIO.
  */
 public enum Identity {
+    // from the fallback
+    SYSTEMCORE("35af8fca4c12ad8e"),
     TEST_BOARD_4("030628b0"),
     ROOKIE_BOT("03063c8d"),
     TEST_BOARD_1("0306cea4"),
@@ -56,7 +58,7 @@ public enum Identity {
             // Calling getSerialNumber in a vscode unit test
             // SEGVs because it does the wrong
             // thing with JNIs, so don't do that.
-            serialNumber = RobotController.getSerialNumber();
+            serialNumber = SerialNumber.get();
         } else {
             serialNumber = "";
         }

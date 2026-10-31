@@ -16,9 +16,8 @@ import org.team100.lib.subsystems.swerve.SwerveLocal;
 import org.team100.lib.subsystems.swerve.kinodynamics.SwerveKinodynamics;
 import org.team100.lib.uncertainty.IsotropicNoiseSE2;
 import org.team100.lib.uncertainty.VariableR1;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
+import org.wpilib.driverstation.MatchState;
+import org.wpilib.math.geometry.Pose2d;
 
 /**
  * Provides state estimates after updating vision and odometry.
@@ -69,7 +68,7 @@ public class FusedEstimator implements StateEstimator {
         NudgingVisionEstimator visionEstimate = new NudgingVisionEstimator(
                 driveLog, m_history::getRecord);
         m_tagReader = new AprilTagCornerReader(
-                driveLog, layout, DriverStation::getAlliance);
+                driveLog, layout, MatchState::getAlliance);
         HistoryGardener gardener = new HistoryGardener(
                 m_history, odometryEstimate, or, visionEstimate);
         m_updater = new GardenUpdater(

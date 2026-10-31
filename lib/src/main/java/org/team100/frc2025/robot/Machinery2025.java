@@ -26,12 +26,13 @@ import org.team100.lib.subsystems.swerve.kinodynamics.SwerveKinodynamics;
 import org.team100.lib.subsystems.swerve.kinodynamics.SwerveKinodynamicsFactory;
 import org.team100.lib.subsystems.swerve.module.SwerveModuleCollection;
 import org.team100.lib.targeting.Targets;
+import org.team100.lib.util.CanBusId;
 import org.team100.lib.util.CanId;
 import org.team100.lib.visualization.RobotPoseVisualization;
 import org.team100.lib.visualization.TrajectoryVisualization;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
+import org.wpilib.driverstation.MatchState;
+import org.wpilib.framework.RobotBase;
+import org.wpilib.math.geometry.Twist2d;
 
 /**
  * This should contain all the hardware of the robot: all the subsystems etc
@@ -70,7 +71,7 @@ public class Machinery2025 {
         fieldLogger = field;
         LoggerFactory driveLog = logger.name("Drive");
 
-        ////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         //
         // DRIVETRAIN
         //
@@ -104,26 +105,26 @@ public class Machinery2025 {
                 proxyEstimator,
                 swerveLocal);
         new AprilTagVisualizer(
-                driveLog, fieldLogger, m_drive::getState, layout, DriverStation::getAlliance);
+                driveLog, fieldLogger, m_drive::getState, layout, MatchState::getAlliance);
         new RobotPoseVisualization(
                 fieldLogger, () -> m_drive.getState(), "robot");
 
-        ////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         //
         // TARGETING
         //
         m_targets = new Targets(driveLog, fieldLogger, 0.2, m_drive::getState);
 
-        ////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         //
         // SUBSYSTEMS
         //
         m_mech = new CalgamesMech(logger, currentLog, 0.5, 0.343);
         m_manipulator = new Manipulator(logger, currentLog);
-        m_climber = new Climber2025(logger, currentLog, new CanId(13));
-        m_climberIntake = new ClimberIntake(logger, currentLog, new CanId(14));
+        m_climber = new Climber2025(logger, currentLog, new CanId(13), new CanBusId(0));
+        m_climberIntake = new ClimberIntake(logger, currentLog, new CanId(14), new CanBusId(0));
 
-        ////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         //
         // VISUALIZATIONS
         //
@@ -131,7 +132,7 @@ public class Machinery2025 {
         new CalgamesViz(m_mech);
         new ClimberVisualization(m_climber, m_climberIntake);
 
-        ////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////
         //
         // LED INDICATOR
         //

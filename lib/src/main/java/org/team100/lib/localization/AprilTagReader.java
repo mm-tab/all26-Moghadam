@@ -5,8 +5,7 @@ import java.util.List;
 
 import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.network.CameraReader;
-
-import edu.wpi.first.util.struct.StructBuffer;
+import org.wpilib.util.struct.StructBuffer;
 
 /**
  * Reads camera observations, produces robot pose estimates.

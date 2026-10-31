@@ -15,9 +15,8 @@ import org.team100.lib.mechanism.RotaryMechanism;
 import org.team100.lib.music.Player;
 import org.team100.lib.subsystems.swerve.module.state.SwerveModulePosition100;
 import org.team100.lib.subsystems.swerve.module.state.SwerveModuleState100;
-
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.RobotBase;
+import org.wpilib.framework.RobotBase;
+import org.wpilib.math.geometry.Rotation2d;
 
 /**
  * Control of a single module.
@@ -219,7 +218,7 @@ public abstract class SwerveModule100 implements Player {
         m_previousDesiredWrappedAngle = nextWrappedAngle;
     }
 
-    /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
 
     /**
      * Correct the desired speed for steering coupling.

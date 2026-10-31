@@ -4,10 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.team100.lib.testing.TestUtil;
-
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.numbers.N2;
+import org.wpilib.math.linalg.VecBuilder;
+import org.wpilib.math.linalg.Vector;
+import org.wpilib.math.numbers.N2;
 
 public class RRConfigTest {
     /**
@@ -36,7 +35,7 @@ public class RRConfigTest {
         TestUtil.verify(x, x00);
         RRConfig y00 = RRConfig.fromVector(x.toVector().plus(unit.times(d)));
         TestUtil.verify(y, y00);
-        RRConfig hh = RRConfig.fromVector(x.toVector().plus(unit.times(d/2)));
+        RRConfig hh = RRConfig.fromVector(x.toVector().plus(unit.times(d / 2)));
         TestUtil.verify(new RRConfig(2, 3), hh);
     }
 

@@ -4,8 +4,7 @@ import java.util.Map;
 
 import org.team100.lib.state.StateSE2;
 import org.team100.lib.uncertainty.IsotropicNoiseSE2;
-
-import edu.wpi.first.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Pose2d;
 
 /** Interface for pose and velocity ("state") estimation. */
 public interface StateEstimator {

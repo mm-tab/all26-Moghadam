@@ -22,11 +22,11 @@ import org.team100.lib.reference.r1.ReferenceR1;
 import org.team100.lib.sensor.position.absolute.ProxyRotaryPositionSensor;
 import org.team100.lib.servo.AngularPositionServo;
 import org.team100.lib.servo.OutboardAngularPositionServo;
+import org.team100.lib.util.CanBusId;
 import org.team100.lib.util.CanId;
-
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.framework.RobotBase;
 
 /**
  * Discus version that uses the "servo" abstraction, which
@@ -63,6 +63,7 @@ public class DiscusServo extends SubsystemBase {
                     logger,
                     currentLog,
                     new CanId(36),
+                    new CanBusId(0),
                     NeutralMode100.COAST,
                     MotorPhase.REVERSE,
                     new CurrentLimit(STATOR_LIMIT, SUPPLY_LIMIT),
@@ -99,8 +100,6 @@ public class DiscusServo extends SubsystemBase {
         return m_servo.getUnwrappedPositionRad();
     }
 
-    //////////////////////
-
     private void setDutyCycle(double p) {
         m_servo.setDutyCycle(p);
     }
@@ -109,7 +108,7 @@ public class DiscusServo extends SubsystemBase {
         m_sensor.setUnwrappedEncoderPositionRad(0);
     }
 
-    ///////////////////////
+    ////////////////////
     //
     // Commands
 

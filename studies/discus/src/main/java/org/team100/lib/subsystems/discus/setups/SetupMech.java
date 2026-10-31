@@ -7,8 +7,7 @@ import org.team100.lib.logging.Logging;
 import org.team100.lib.logging.TotalCurrentLog;
 import org.team100.lib.subsystems.discus.DiscusMech;
 import org.team100.lib.visualization.ArmVisualization;
-
-import edu.wpi.first.wpilibj.XboxController;
+import org.wpilib.driverstation.Gamepad;
 
 /** Adds gearing, friction, and PID. */
 public class SetupMech implements Runnable {
@@ -18,7 +17,7 @@ public class SetupMech implements Runnable {
 
     public SetupMech(TotalCurrentLog currentLog) {
         final LoggerFactory logger = Logging.root();
-        XboxController controller = new XboxController(0);
+        Gamepad controller = new Gamepad(0);
 
         m_discus = new DiscusMech(logger, currentLog);
         m_viz = new ArmVisualization(m_discus::getPosition, "discus", 0);
@@ -30,14 +29,14 @@ public class SetupMech implements Runnable {
         // These bindings are remembered by the trigger event loop, so we don't need to
         // retain them.
         // button 1, "z" in the sim
-        whileTrue(controller::getAButton,
+        whileTrue(controller::getSouthFaceButton,
                 m_discus.home());
         // button 2, "x" in the sim
-        whileTrue(controller::getBButton,
+        whileTrue(controller::getEastFaceButton,
                 m_discus.zero());
-        whileTrue(controller::getXButton,
+        whileTrue(controller::getWestFaceButton,
                 m_discus.position(() -> 2));
-        whileTrue(controller::getYButton,
+        whileTrue(controller::getNorthFaceButton,
                 m_discus.position(() -> -2));
 
         // set voltage directly to tune friction.

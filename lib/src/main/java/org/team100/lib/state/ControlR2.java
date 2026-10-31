@@ -2,8 +2,7 @@ package org.team100.lib.state;
 
 import org.team100.lib.geometry.r2.AccelerationR2;
 import org.team100.lib.geometry.r2.VelocityR2;
-
-import edu.wpi.first.math.geometry.Translation2d;
+import org.wpilib.math.geometry.Translation2d;
 
 /** Represents planar position only. */
 public class ControlR2 {

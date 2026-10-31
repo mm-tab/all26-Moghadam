@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Test;
 import org.team100.lib.camera.Camera;
 import org.team100.lib.camera.Offset;
 import org.team100.lib.state.StateSE2;
-
-import edu.wpi.first.hal.AllianceStationID;
-import edu.wpi.first.hal.HAL;
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Quaternion;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.simulation.DriverStationSim;
+import org.wpilib.driverstation.Alliance;
+import org.wpilib.hardware.hal.AllianceStationID;
+import org.wpilib.hardware.hal.HAL;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Pose3d;
+import org.wpilib.math.geometry.Quaternion;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Rotation3d;
+import org.wpilib.math.geometry.Transform3d;
+import org.wpilib.math.geometry.Translation3d;
+import org.wpilib.math.linalg.Vector;
+import org.wpilib.math.numbers.N3;
+import org.wpilib.simulation.DriverStationSim;
 
 public class SimulatedTagCornerDetectorTest {
     private static final double DELTA = 0.001;
@@ -46,7 +45,7 @@ public class SimulatedTagCornerDetectorTest {
                 layout,
                 x -> new StateSE2(new Pose2d(2.6576, 4.0259, Rotation2d.kZero)));
         // sim uses alliance from driver station
-        DriverStationSim.setAllianceStationId(AllianceStationID.Red1);
+        DriverStationSim.setAllianceStationId(AllianceStationID.RED_1);
         DriverStationSim.notifyNewData();
         sim.run();
     }
@@ -193,7 +192,7 @@ public class SimulatedTagCornerDetectorTest {
         // panned right about 17 degrees
         assertEquals(-0.295, cameraPose3d.getRotation().getZ(), DELTA);
 
-        Pose3d tagPose = layout.getTagPose(Alliance.Red, 6).get();
+        Pose3d tagPose = layout.getTagPose(Alliance.RED, 6).get();
         Transform3d tagInCamera = new Transform3d(cameraPose3d, tagPose);
 
         Translation3d tagTranslationInCamera = tagInCamera.getTranslation();

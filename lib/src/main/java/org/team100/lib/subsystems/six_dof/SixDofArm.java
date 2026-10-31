@@ -24,11 +24,10 @@ import org.team100.lib.subsystems.rn.PositionSubsystemRn;
 import org.team100.lib.subsystems.six_dof.commands.MoveWithProfile;
 import org.team100.lib.subsystems.six_dof.commands.MoveWithSpline;
 import org.team100.lib.util.StrUtil;
-
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.numbers.N6;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.math.geometry.Pose3d;
+import org.wpilib.math.numbers.N6;
 
 /**
  * Six-DOF arm, for training.

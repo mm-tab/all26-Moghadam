@@ -1,9 +1,9 @@
 package org.team100.lib.commands;
+
 import static org.team100.lib.util.TriggerUtil.whileTrue;
 
 import org.team100.lib.hid.Buttons2025;
-
-import edu.wpi.first.wpilibj2.command.PrintCommand;
+import org.wpilib.command2.PrintCommand;
 
 public class Buttons2025Demo {
     Buttons2025 m_control;
@@ -43,6 +43,4 @@ public class Buttons2025Demo {
         whileTrue(m_control::kl, new PrintCommand("kl"));
     }
 
-
- 
 }

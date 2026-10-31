@@ -28,10 +28,10 @@ import org.team100.lib.subsystems.swerve.module.SwerveModuleCollection;
 import org.team100.lib.testing.TestUtil;
 import org.team100.lib.testing.Timeless;
 import org.team100.lib.uncertainty.IsotropicNoiseSE2;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Twist2d;
+import org.wpilib.math.kinematics.ChassisVelocities;
 
 public class FusedEstimatorTest implements Timeless {
     private static final boolean DEBUG = false;
@@ -72,7 +72,7 @@ public class FusedEstimatorTest implements Timeless {
                         new VelocitySE2(0, 0, 0)),
                 estimate.getState(Takt.get()));
 
-        drive.setChassisSpeeds(new ChassisSpeeds(1, 0, 0), ChassisAcceleration.ZERO);
+        drive.setChassisVelocities(new ChassisVelocities(1, 0, 0), ChassisAcceleration.ZERO);
         stepTime();
         TestUtil.verify(
                 new StateSE2(
@@ -80,7 +80,7 @@ public class FusedEstimatorTest implements Timeless {
                         new VelocitySE2(1.0, 0, 0)),
                 estimate.getState(Takt.get()));
 
-        drive.setChassisSpeeds(new ChassisSpeeds(1, 0, 0), ChassisAcceleration.ZERO);
+        drive.setChassisVelocities(new ChassisVelocities(1, 0, 0), ChassisAcceleration.ZERO);
         stepTime();
         TestUtil.verify(
                 new StateSE2(
@@ -88,7 +88,7 @@ public class FusedEstimatorTest implements Timeless {
                         new VelocitySE2(1.0, 0, 0)),
                 estimate.getState(Takt.get()));
 
-        drive.setChassisSpeeds(new ChassisSpeeds(1, 0, 0), ChassisAcceleration.ZERO);
+        drive.setChassisVelocities(new ChassisVelocities(1, 0, 0), ChassisAcceleration.ZERO);
         stepTime();
         TestUtil.verify(
                 new StateSE2(
@@ -162,7 +162,7 @@ public class FusedEstimatorTest implements Timeless {
                         new VelocitySE2(0, 0, 0)),
                 estimate.getState(Takt.get()));
 
-        drive.setChassisSpeeds(new ChassisSpeeds(1, 0, 1), ChassisAcceleration.ZERO);
+        drive.setChassisVelocities(new ChassisVelocities(1, 0, 1), ChassisAcceleration.ZERO);
         stepTime();
         TestUtil.verify(
                 new StateSE2(
@@ -170,7 +170,7 @@ public class FusedEstimatorTest implements Timeless {
                         new VelocitySE2(0.991, 0.064, 0.993)), // ???
                 estimate.getState(Takt.get()));
 
-        drive.setChassisSpeeds(new ChassisSpeeds(1, 0, 1), ChassisAcceleration.ZERO);
+        drive.setChassisVelocities(new ChassisVelocities(1, 0, 1), ChassisAcceleration.ZERO);
         stepTime();
         TestUtil.verify(
                 new StateSE2(
@@ -178,7 +178,7 @@ public class FusedEstimatorTest implements Timeless {
                         new VelocitySE2(1.0, 0.02, 1.0)),
                 estimate.getState(Takt.get()));
 
-        drive.setChassisSpeeds(new ChassisSpeeds(1, 0, 1), ChassisAcceleration.ZERO);
+        drive.setChassisVelocities(new ChassisVelocities(1, 0, 1), ChassisAcceleration.ZERO);
         stepTime();
         TestUtil.verify(
                 new StateSE2(
@@ -256,7 +256,7 @@ public class FusedEstimatorTest implements Timeless {
                 estimate.getState(Takt.get()));
 
         for (double t = 0.02; t < 1; t += 0.02) {
-            drive.setChassisSpeeds(new ChassisSpeeds(1, 0, 1), ChassisAcceleration.ZERO);
+            drive.setChassisVelocities(new ChassisVelocities(1, 0, 1), ChassisAcceleration.ZERO);
             stepTime();
             double timestampS = Takt.get();
             if (DEBUG) {

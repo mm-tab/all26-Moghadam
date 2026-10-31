@@ -15,9 +15,9 @@ import org.team100.lib.profile.r1.WPITrapezoidProfileR1;
 import org.team100.lib.subsystems.six_dof.commands.MoveWithProfile;
 import org.team100.lib.testing.TestUtil;
 import org.team100.lib.testing.Timeless;
+import org.wpilib.math.geometry.Pose3d;
+import org.wpilib.math.geometry.Rotation3d;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
 
 public class SixDofArmTest implements Timeless {
     private static final boolean DEBUG = false;

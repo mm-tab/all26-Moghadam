@@ -12,14 +12,13 @@ import org.team100.lib.logging.LoggerFactory.DoubleLogger;
 import org.team100.lib.logging.LoggerFactory.IntLogger;
 import org.team100.lib.logging.LoggerFactory.Rotation2dLogger;
 import org.team100.lib.util.CanId;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.util.Units;
 
 import com.reduxrobotics.sensors.canandgyro.Canandgyro;
 import com.reduxrobotics.sensors.canandgyro.CanandgyroFaults;
 import com.reduxrobotics.sensors.canandgyro.CanandgyroSettings;
 import com.reduxrobotics.sensors.canandgyro.QuaternionFrame;
-
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 
 /**
  * The Redux gyro folk say that the measurements provided are within 1ms of the

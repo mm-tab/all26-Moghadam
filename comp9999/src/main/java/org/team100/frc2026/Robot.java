@@ -1,5 +1,7 @@
 package org.team100.frc2026;
 
+import static org.wpilib.command2.Commands.repeatingSequence;
+
 import org.team100.frc2026.auton.Autons;
 import org.team100.frc2026.robot.Binder;
 import org.team100.frc2026.robot.Machinery;
@@ -17,12 +19,10 @@ import org.team100.lib.logging.RobotLog;
 import org.team100.lib.network.Sync;
 import org.team100.lib.util.Startup;
 import org.team100.lib.visualization.AutonVisualization;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.CommandScheduler;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.networktables.NetworkTableInstance;
 
 /**
  * This is the main robot class, which wires up events from TimedRobot100.
@@ -47,7 +47,7 @@ public class Robot extends TimedRobot100 {
         m_autons = new Autons(log, m_machinery);
         m_autoViz = new AutonVisualization(fieldLogger);
         m_autons.onChange(m_autoViz::show);
-        m_play = Commands.repeatingSequence(m_machinery.play());
+        m_play = repeatingSequence(m_machinery.play());
         Prewarmer.init(m_machinery);
         System.out.printf("Total Logger Keys: %d\n", Logging.keyCount());
     }
@@ -71,7 +71,7 @@ public class Robot extends TimedRobot100 {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
     //
     // INITIALIZERS, DO NOT CHANGE THESE
     //
@@ -98,13 +98,6 @@ public class Robot extends TimedRobot100 {
     }
 
     @Override
-    public void testInit() {
-        System.out.println("*************************************");
-        System.out.println("TEST MODE!");
-        System.out.println("To run tests, hold down 'a' and 'b'");
-    }
-
-    @Override
     public void close() {
         super.close();
         m_machinery.close();
@@ -112,7 +105,7 @@ public class Robot extends TimedRobot100 {
         m_binder.close();
     }
 
-    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
     //
     // EXIT: CLEAN UP
     //
@@ -124,14 +117,10 @@ public class Robot extends TimedRobot100 {
         CommandScheduler.getInstance().cancelAll();
     }
 
-    ///////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     //
     // LEAVE ALL THESE EMPTY
     //
-
-    @Override
-    public void robotInit() {
-    }
 
     @Override
     public void simulationInit() {
@@ -162,19 +151,10 @@ public class Robot extends TimedRobot100 {
     }
 
     @Override
-    public void testPeriodic() {
-    }
-
-    @Override
     public void autonomousExit() {
     }
 
     @Override
     public void teleopExit() {
     }
-
-    @Override
-    public void testExit() {
-    }
-
 }

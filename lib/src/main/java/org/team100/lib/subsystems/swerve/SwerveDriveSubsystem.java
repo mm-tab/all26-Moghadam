@@ -23,12 +23,11 @@ import org.team100.lib.subsystems.se2.VelocitySubsystemSE2;
 import org.team100.lib.subsystems.swerve.kinodynamics.SwerveKinodynamics;
 import org.team100.lib.subsystems.swerve.module.state.SwerveModuleStates;
 import org.team100.lib.uncertainty.IsotropicNoiseSE2;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.kinematics.ChassisVelocities;
 
 /**
  * The swerve subsystem is a thin subsystem wrapper that provides pose
@@ -58,7 +57,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
         stop();
     }
 
-    ////////////////
+    ///////////////
     //
     // ACTUATORS
     //
@@ -80,19 +79,19 @@ public class SwerveDriveSubsystem extends SubsystemBase
         // is there noise here?
         m_log_rotation_evolution.log(
                 () -> nextTheta.minus(currentState.rotation()).getRadians());
-        ChassisSpeeds nextSpeed = SwerveKinodynamics.toInstantaneousChassisSpeeds(
+        ChassisVelocities nextSpeed = SwerveKinodynamics.toInstantaneousChassisVelocities(
                 nextV.velocity(), nextTheta);
         ChassisAcceleration nextAccel = ChassisAcceleration.fromFieldRelative(
                 nextV.acceleration(), nextTheta);
-        m_swerveLocal.setChassisSpeeds(nextSpeed, nextAccel);
+        m_swerveLocal.setChassisVelocities(nextSpeed, nextAccel);
         m_log_input.log(() -> nextV);
     }
 
     /**
      * Drive using robot-relative coordinates.
      */
-    public void setChassisSpeeds(ChassisSpeeds speeds, ChassisAcceleration accel) {
-        m_swerveLocal.setChassisSpeeds(speeds, accel);
+    public void setChassisVelocities(ChassisVelocities speeds, ChassisAcceleration accel) {
+        m_swerveLocal.setChassisVelocities(speeds, accel);
     }
 
     /**
@@ -113,7 +112,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
         m_estimate.reset(robotPose, noise);
     }
 
-    ///////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
     //
     // Observers
     //
@@ -140,7 +139,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
         return m_estimate.all();
     }
 
-    ///////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
     //
     // Commands
     //
@@ -160,15 +159,15 @@ public class SwerveDriveSubsystem extends SubsystemBase
 
     /** Drive to the robot's right, endlessly. */
     public Command rightwardSlow() {
-        return run(() -> setChassisSpeeds(
-                new ChassisSpeeds(0, -1.0, 0), ChassisAcceleration.ZERO))
+        return run(() -> setChassisVelocities(
+                new ChassisVelocities(0, -1.0, 0), ChassisAcceleration.ZERO))
                 .withName("Drive Right");
     }
 
     /** Spin counterclockwise, endlessly. */
     public Command spinLeft() {
-        return run(() -> setChassisSpeeds(
-                new ChassisSpeeds(0, 0, 1.0), ChassisAcceleration.ZERO))
+        return run(() -> setChassisVelocities(
+                new ChassisVelocities(0, 0, 1.0), ChassisAcceleration.ZERO))
                 .withName("Drive Spin");
     }
 

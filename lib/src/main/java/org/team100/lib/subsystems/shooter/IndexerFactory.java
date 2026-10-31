@@ -20,10 +20,10 @@ import org.team100.lib.reference.r1.VelocityProfileReferenceR1;
 import org.team100.lib.reference.r1.VelocityReferenceR1;
 import org.team100.lib.servo.OutboardLinearPositionServo;
 import org.team100.lib.servo.OutboardLinearVelocityServo;
+import org.team100.lib.util.CanBusId;
 import org.team100.lib.util.CanId;
 import org.team100.lib.util.RoboRioChannel;
-
-import edu.wpi.first.wpilibj.RobotBase;
+import org.wpilib.framework.RobotBase;
 
 public class IndexerFactory {
     private static final double VELOCITY = 10;
@@ -47,6 +47,7 @@ public class IndexerFactory {
     private final double fullVelocityM_S;
     private final CurrentLimit limit;
     private final CanId canId;
+    private final CanBusId busId;
     private final double gearRatio;
     private final double wheelDiaM;
     private final boolean profiled;
@@ -60,6 +61,7 @@ public class IndexerFactory {
             double fullVelocityM_S,
             CurrentLimit limit,
             CanId canId,
+            CanBusId busId,
             double gearRatio,
             double wheelDiaM,
             boolean profiled,
@@ -71,6 +73,7 @@ public class IndexerFactory {
         this.fullVelocityM_S = fullVelocityM_S;
         this.limit = limit;
         this.canId = canId;
+        this.busId = busId;
         this.gearRatio = gearRatio;
         this.wheelDiaM = wheelDiaM;
         this.profiled = profiled;
@@ -104,7 +107,7 @@ public class IndexerFactory {
         double maxSpeedM_S = 10;
         double freeSpeedRad_S = maxSpeedM_S * gearRatio / (0.5 * wheelDiaM);
         Motor motor = getMotor(
-                limit, log, currentLog, freeSpeedRad_S, canId,
+                limit, log, currentLog, freeSpeedRad_S, canId, busId,
                 MotorPhase.FORWARD, friction, pid);
         return new DutyCycleIndexer(log, fullDutyCycle, motor);
     }
@@ -113,7 +116,7 @@ public class IndexerFactory {
         if (canId == null)
             throw new IllegalArgumentException();
         LinearMechanism mech = getPositionMech(
-                log, currentLog, limit, canId, gearRatio, wheelDiaM);
+                log, currentLog, limit, canId, busId, gearRatio, wheelDiaM);
         TrapezoidProfileR1 profile = new TrapezoidProfileR1(
                 VELOCITY, ACCEL, 0.02);
         ProfileReferenceR1 ref = new ProfileReferenceR1(
@@ -130,7 +133,7 @@ public class IndexerFactory {
             throw new IllegalArgumentException();
         LinearMechanism mech = getVelocityMech(
                 log, currentLog, limit,
-                canId, gearRatio, wheelDiaM);
+                canId, busId, gearRatio, wheelDiaM);
         VelocityProfileR1 profile = new AccelLimitedVelocityProfileR1(100);
         VelocityReferenceR1 ref = new VelocityProfileReferenceR1(
                 log, () -> profile, 1);
@@ -144,6 +147,7 @@ public class IndexerFactory {
             TotalCurrentLog currentLog,
             CurrentLimit limit,
             CanId canId,
+            CanBusId busId,
             double gearRatio,
             double wheelDiaM) {
         Friction friction = new Friction(0.02, 0.02, 0.00, 0.5);
@@ -152,7 +156,7 @@ public class IndexerFactory {
         double maxSpeedM_S = 10;
         double freeSpeedRad_S = maxSpeedM_S * gearRatio / (0.5 * wheelDiaM);
         Motor motor = getMotor(
-                limit, log, currentLog, freeSpeedRad_S, canId,
+                limit, log, currentLog, freeSpeedRad_S, canId, busId,
                 MotorPhase.REVERSE, friction, pid);
         LinearMechanism mech = new LinearMechanism(
                 log, motor, motor.encoder(), gearRatio, wheelDiaM,
@@ -165,6 +169,7 @@ public class IndexerFactory {
             TotalCurrentLog currentLog,
             CurrentLimit limit,
             CanId canId,
+            CanBusId busId,
             double gearRatio,
             double wheelDiaM) {
         Friction friction = new Friction(0.02, 0.02, 0.0, 0.5);
@@ -173,7 +178,7 @@ public class IndexerFactory {
         double maxSpeedM_S = 10;
         double freeSpeedRad_S = maxSpeedM_S * gearRatio / (0.5 * wheelDiaM);
         Motor motor = getMotor(
-                limit, log, currentLog, freeSpeedRad_S, canId,
+                limit, log, currentLog, freeSpeedRad_S, canId, busId,
                 MotorPhase.REVERSE, friction, pid);
         LinearMechanism mech = new LinearMechanism(
                 log, motor, motor.encoder(), gearRatio, wheelDiaM,
@@ -187,6 +192,7 @@ public class IndexerFactory {
             TotalCurrentLog currentLog,
             double freeSpeedRad_S,
             CanId canId,
+            CanBusId busId,
             MotorPhase phase,
             Friction friction,
             PIDConstants pid) {
@@ -195,7 +201,7 @@ public class IndexerFactory {
         int measurementPeriod = 4;
         if (RobotBase.isReal()) {
             return new MinionSparkMotor(
-                    log, currentLog, canId, NeutralMode100.BRAKE, phase,
+                    log, currentLog, canId, busId, NeutralMode100.BRAKE, phase,
                     limit, friction, pid, averageDepth, measurementPeriod);
         } else {
             return new SimulatedMotor(log, freeSpeedRad_S);

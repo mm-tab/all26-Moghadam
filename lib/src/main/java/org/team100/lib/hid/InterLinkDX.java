@@ -11,9 +11,8 @@ import org.team100.lib.logging.Level;
 import org.team100.lib.logging.LogPoller;
 import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.logging.LoggerFactory.DoubleLogger;
-
-import edu.wpi.first.math.filter.LinearFilter;
-import edu.wpi.first.wpilibj.GenericHID;
+import org.wpilib.driverstation.GenericHID;
+import org.wpilib.math.filter.LinearFilter;
 
 /**
  * The Spektrum InterLinkDX controller is an RC-style control with a USB
@@ -173,7 +172,7 @@ public class InterLinkDX {
         return button(15);
     }
 
-    ////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////
 
     /** Get raw axis value. */
     private double axis(int axis) {

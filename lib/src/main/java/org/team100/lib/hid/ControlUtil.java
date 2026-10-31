@@ -3,8 +3,8 @@ package org.team100.lib.hid;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Rotation2d;
+import org.wpilib.math.util.MathUtil;
+import org.wpilib.math.geometry.Rotation2d;
 
 public class ControlUtil {
     /**
@@ -30,7 +30,7 @@ public class ControlUtil {
      * Clamp input to range
      */
     public static double clamp(double input, double range) {
-        return MathUtil.clamp(input, -range, range);
+        return Math.clamp(input, -range, range);
     }
 
     /** Apply center correction and scale factors */

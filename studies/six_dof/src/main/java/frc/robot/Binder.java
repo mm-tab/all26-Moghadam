@@ -6,11 +6,10 @@ import org.team100.lib.commands.MoveAndHold;
 import org.team100.lib.geometry.se3.VelocitySE3;
 import org.team100.lib.profile.r1.ProfileR1;
 import org.team100.lib.profile.r1.WPITrapezoidProfileR1;
-
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Commands;
+import org.wpilib.command2.Commands;
+import org.wpilib.driverstation.Gamepad;
+import org.wpilib.math.geometry.Pose3d;
+import org.wpilib.math.geometry.Rotation3d;
 
 public class Binder {
 
@@ -18,7 +17,7 @@ public class Binder {
 
     public Binder(Machinery machinery) {
         m_machinery = machinery;
-        XboxController m_controller = new XboxController(0);
+        Gamepad m_controller = new Gamepad(0);
         ProfileR1 profile = new WPITrapezoidProfileR1(1, 1);
         // button 1, "z" in sim
         // whileTrue(m_controller::getAButton, m_machinery.m_arm.warp0());
@@ -39,7 +38,7 @@ public class Binder {
                 new Pose3d(0.25, -0.25, 0.1, new Rotation3d(0, 0, 0)));
         MoveAndHold move4 = m_machinery.m_arm.move(profile,
                 new Pose3d(0.5, -0.25, 0.1, new Rotation3d(0, Math.PI / 2, 0)));
-        whileTrue(m_controller::getAButton,
+        whileTrue(m_controller::getSouthFaceButton,
                 move1.until(move1::isDone)
                         .andThen(move2.until(move2::isDone))
                         .andThen(move3.until(move3::isDone))
@@ -62,7 +61,7 @@ public class Binder {
                 new VelocitySE3(-0.5, 0, 0, 0, 0, 0),
                 new Pose3d(0.5, -0.25, 0.1, new Rotation3d(0, Math.PI / 2, 0)),
                 new VelocitySE3(0, 0, -0.5, 0, 0, 0));
-        whileTrue(m_controller::getBButton,
+        whileTrue(m_controller::getEastFaceButton,
                 move1s.until(move1s::isDone)
                         .andThen(Commands.waitSeconds(0.5))
                         .andThen(move2s.until(move2s::isDone))
@@ -80,7 +79,7 @@ public class Binder {
                 new Pose3d(0.4, 0, 0.3, new Rotation3d(0, 0, -Math.PI / 4)));
         MoveAndHold s4 = m_machinery.m_arm.move(profile,
                 new Pose3d(0.4, 0, 0.3, new Rotation3d(0, -Math.PI / 4, 0)));
-        whileTrue(m_controller::getXButton,
+        whileTrue(m_controller::getWestFaceButton,
                 s1.until(s1::isDone)
                         .andThen(s2.until(s2::isDone))
                         .andThen(s3.until(s3::isDone))

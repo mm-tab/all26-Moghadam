@@ -16,8 +16,8 @@ import org.team100.lib.util.AffineFunction;
 import org.team100.lib.util.Clamp;
 import org.team100.lib.util.StrUtil;
 
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.math.geometry.Translation2d;
+import org.wpilib.command2.SubsystemBase;
 
 /**
  * Uses only two degrees of freedom of the Lynxmotion arm.

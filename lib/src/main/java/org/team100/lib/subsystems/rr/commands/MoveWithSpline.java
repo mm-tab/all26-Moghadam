@@ -10,10 +10,9 @@ import org.team100.lib.reference.rn.PositionReferenceControllerRn;
 import org.team100.lib.reference.rn.SplineReferenceRn;
 import org.team100.lib.spline.rn.SplineRn;
 import org.team100.lib.subsystems.rr.RRArm;
-
-import edu.wpi.first.math.Nat;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.numbers.N2;
+import org.wpilib.math.geometry.Translation2d;
+import org.wpilib.math.numbers.N2;
+import org.wpilib.math.util.Nat;
 
 /**
  * Generate a spline in R3, in joint space, and follow it.

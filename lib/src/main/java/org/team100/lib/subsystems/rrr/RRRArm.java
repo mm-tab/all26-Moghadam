@@ -8,9 +8,8 @@ import org.team100.lib.kinematics.rrr_se2.RRRFeasibility;
 import org.team100.lib.kinematics.rrr_se2.RRRKinematicsPoE;
 import org.team100.lib.subsystems.rn.PositionSubsystemRn;
 import org.team100.lib.subsystems.se2.PositionSubsystemSE2;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.numbers.N3;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.numbers.N3;
 
 /**
  * NOTE: using the SE2 position API directly risks "flipping" in an uncontrolled
@@ -59,4 +58,5 @@ public interface RRRArm extends PositionSubsystemSE2, PositionSubsystemRn<N3> {
      * Force all axis encoders to zero.
      */
     void setZero();
+
 }

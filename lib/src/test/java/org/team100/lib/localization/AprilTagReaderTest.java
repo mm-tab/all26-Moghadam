@@ -14,20 +14,20 @@ import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.logging.TestLoggerFactory;
 import org.team100.lib.logging.primitive.TestPrimitiveLogger;
 import org.team100.lib.testing.Timeless;
-
-import edu.wpi.first.hal.AllianceStationID;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.networktables.StructArrayTopic;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.simulation.DriverStationSim;
+import org.team100.lib.util.StrUtil;
+import org.wpilib.driverstation.Alliance;
+import org.wpilib.driverstation.MatchState;
+import org.wpilib.hardware.hal.AllianceStationID;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Pose3d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Rotation3d;
+import org.wpilib.math.geometry.Transform3d;
+import org.wpilib.math.geometry.Translation3d;
+import org.wpilib.networktables.NetworkTableInstance;
+import org.wpilib.networktables.StructArrayPublisher;
+import org.wpilib.networktables.StructArrayTopic;
+import org.wpilib.simulation.DriverStationSim;
 
 class AprilTagReaderTest implements Timeless {
     private static final double DELTA = 0.01;
@@ -39,14 +39,14 @@ class AprilTagReaderTest implements Timeless {
                 "2025-reefscape.json");
 
         AprilTagTranslator translator = new AprilTagTranslator(
-                logger, layout, DriverStation::getAlliance);
+                logger, layout, MatchState::getAlliance);
         AprilTagReader reader = new AprilTagReader(
                 logger, translator);
 
         // client instance
         NetworkTableInstance inst = NetworkTableInstance.create();
         inst.setServer("localhost");
-        inst.startClient4("tag_finder24");
+        inst.startClient("tag_finder24");
 
         // wait for the NT thread
         Thread.sleep(100);
@@ -64,7 +64,7 @@ class AprilTagReaderTest implements Timeless {
         inst.flush();
 
         // localizer needs alliance
-        DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
+        DriverStationSim.setAllianceStationId(AllianceStationID.BLUE_1);
         DriverStationSim.notifyNewData();
         List<VisionMeasurement> measurements = reader.read();
         assertTrue(measurements.isEmpty());
@@ -97,7 +97,7 @@ class AprilTagReaderTest implements Timeless {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         // in red layout blip 7 is on the other side of the field
 
@@ -106,7 +106,7 @@ class AprilTagReaderTest implements Timeless {
                 new Transform3d(new Translation3d(0, 0, 1), new Rotation3d()));
 
         // verify tag location
-        Pose3d tagPose = layout.getTagPose(Alliance.Red, 7).get();
+        Pose3d tagPose = layout.getTagPose(Alliance.RED, 7).get();
         assertEquals(3.658, tagPose.getX(), DELTA);
         assertEquals(4.026, tagPose.getY(), DELTA);
         assertEquals(0.308, tagPose.getZ(), DELTA);
@@ -138,7 +138,7 @@ class AprilTagReaderTest implements Timeless {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         // camera sees the tag straight ahead in the center of the frame,
         // but rotated pi/4 to the left. this is ignored anyway.
@@ -148,7 +148,7 @@ class AprilTagReaderTest implements Timeless {
                 new Rotation3d(0, -Math.PI / 4, 0)));
 
         // verify tag 7 location
-        Pose3d tagPose = layout.getTagPose(Alliance.Red, 7).get();
+        Pose3d tagPose = layout.getTagPose(Alliance.RED, 7).get();
         assertEquals(3.658, tagPose.getX(), DELTA);
         assertEquals(4.026, tagPose.getY(), DELTA);
         assertEquals(0.308, tagPose.getZ(), DELTA);
@@ -191,7 +191,7 @@ class AprilTagReaderTest implements Timeless {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         Blip tag4 = new Blip(0, 4, new Transform3d(
                 new Translation3d(0, 0, 2.4),
@@ -214,12 +214,13 @@ class AprilTagReaderTest implements Timeless {
     void testCase2() throws IOException {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
-        Pose3d tag4pose = layout.getTagPose(Alliance.Red, 4).get();
+        Pose3d tag4pose = layout.getTagPose(Alliance.RED, 4).get();
         assertEquals(8.272, tag4pose.getX(), DELTA);
         assertEquals(1.914, tag4pose.getY(), DELTA);
         assertEquals(1.868, tag4pose.getZ(), DELTA);
+        System.out.println(StrUtil.poseStr(tag4pose));
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         // tag is 1m away on bore
         final Blip tag4 = new Blip(0, 4, new Transform3d(
@@ -243,12 +244,12 @@ class AprilTagReaderTest implements Timeless {
     void testCase2WithOffset() throws IOException {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
-        Pose3d tag4pose = layout.getTagPose(Alliance.Red, 4).get();
+        Pose3d tag4pose = layout.getTagPose(Alliance.RED, 4).get();
         assertEquals(8.272, tag4pose.getX(), DELTA);
         assertEquals(1.914, tag4pose.getY(), DELTA);
         assertEquals(1.868, tag4pose.getZ(), DELTA);
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         Blip tag4 = new Blip(0, 4, new Transform3d(
                 new Translation3d(0, 0, 1),
@@ -271,12 +272,12 @@ class AprilTagReaderTest implements Timeless {
     void testCase2tilt() throws IOException {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
-        Pose3d tag4pose = layout.getTagPose(Alliance.Red, 4).get();
+        Pose3d tag4pose = layout.getTagPose(Alliance.RED, 4).get();
         assertEquals(8.272, tag4pose.getX(), DELTA);
         assertEquals(1.914, tag4pose.getY(), DELTA);
         assertEquals(1.868, tag4pose.getZ(), DELTA);
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         Blip tag4 = new Blip(0, 4, new Transform3d(
                 new Translation3d(0, 0, 1.4142),
@@ -298,12 +299,12 @@ class AprilTagReaderTest implements Timeless {
     void testCase3() throws IOException {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
-        Pose3d tag4pose = layout.getTagPose(Alliance.Red, 4).get();
+        Pose3d tag4pose = layout.getTagPose(Alliance.RED, 4).get();
         assertEquals(8.272, tag4pose.getX(), DELTA);
         assertEquals(1.914, tag4pose.getY(), DELTA);
         assertEquals(1.868, tag4pose.getZ(), DELTA);
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         Blip tag4 = new Blip(0, 4, new Transform3d(
                 new Translation3d(-1, 0, 1),
@@ -324,12 +325,12 @@ class AprilTagReaderTest implements Timeless {
     void testCase4() throws IOException {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
-        Pose3d tag4pose = layout.getTagPose(Alliance.Red, 4).get();
+        Pose3d tag4pose = layout.getTagPose(Alliance.RED, 4).get();
         assertEquals(8.272, tag4pose.getX(), DELTA);
         assertEquals(1.914, tag4pose.getY(), DELTA);
         assertEquals(1.868, tag4pose.getZ(), DELTA);
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         Blip tag4 = new Blip(0, 4, new Transform3d(
                 new Translation3d(0, 0, 1.4142),
@@ -350,12 +351,12 @@ class AprilTagReaderTest implements Timeless {
     void testCase5() throws IOException {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
-        Pose3d tag4pose = layout.getTagPose(Alliance.Red, 4).get();
+        Pose3d tag4pose = layout.getTagPose(Alliance.RED, 4).get();
         assertEquals(8.272, tag4pose.getX(), DELTA);
         assertEquals(1.914, tag4pose.getY(), DELTA);
         assertEquals(1.868, tag4pose.getZ(), DELTA);
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         Blip tag4 = new Blip(0, 4, new Transform3d(
                 new Translation3d(0, 0, 1.4142),
@@ -375,12 +376,12 @@ class AprilTagReaderTest implements Timeless {
     void testCase6() throws IOException {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
-        Pose3d tag4pose = layout.getTagPose(Alliance.Red, 4).get();
+        Pose3d tag4pose = layout.getTagPose(Alliance.RED, 4).get();
         assertEquals(8.272, tag4pose.getX(), DELTA);
         assertEquals(1.914, tag4pose.getY(), DELTA);
         assertEquals(1.868, tag4pose.getZ(), DELTA);
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         Blip tag4 = new Blip(0, 4, new Transform3d(
                 new Translation3d(0, 0, 2),
@@ -401,12 +402,12 @@ class AprilTagReaderTest implements Timeless {
     void testCase7() throws IOException {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
-        Pose3d tag4pose = layout.getTagPose(Alliance.Red, 4).get();
+        Pose3d tag4pose = layout.getTagPose(Alliance.RED, 4).get();
         assertEquals(8.272, tag4pose.getX(), DELTA);
         assertEquals(1.914, tag4pose.getY(), DELTA);
         assertEquals(1.868, tag4pose.getZ(), DELTA);
 
-        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.Red));
+        AprilTagTranslator m_translator = new AprilTagTranslator(logger, layout, () -> Optional.of(Alliance.RED));
 
         // 30 degrees, long side is sqrt2, so hypotenuse is sqrt2/sqrt3/2
         Blip tag4 = new Blip(0, 4, new Transform3d(

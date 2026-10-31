@@ -63,6 +63,9 @@ public class SwerveModuleCollection implements Player {
             CurrentLimit steerLimit) {
         LoggerFactory log = parent.name("Swerve Modules");
         switch (Identity.instance) {
+            case SYSTEMCORE:
+                return new SwerveModulesSystemcore(
+                        log, currentLog, driveLimit, steerLimit);
             case SQUAREBOT:
                 return new SwerveModulesSquare(
                         log, currentLog, driveLimit, steerLimit);
@@ -78,7 +81,6 @@ public class SwerveModuleCollection implements Player {
         }
     }
 
-    //////////////////////////////////////////////////
     //
     // Actuators
     //
@@ -127,7 +129,7 @@ public class SwerveModuleCollection implements Player {
         m_rearRight.stop();
     }
 
-    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////
     //
     // Observers
     //
@@ -150,7 +152,7 @@ public class SwerveModuleCollection implements Player {
                 m_rearRight.getState());
     }
 
-    ////////////////////////////////////////////
+    ////////////////////////////////////
 
     public void close() {
         m_frontLeft.close();

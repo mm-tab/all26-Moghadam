@@ -13,10 +13,9 @@ import org.team100.lib.camera.Camera;
 import org.team100.lib.camera.Distortion;
 import org.team100.lib.camera.Intrinsic;
 import org.team100.lib.geometry.OpenCVUtil;
-
-import edu.wpi.first.cscore.OpenCvLoader;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
+import org.wpilib.math.geometry.Rotation3d;
+import org.wpilib.math.geometry.Transform3d;
+import org.wpilib.vision.camera.OpenCvLoader;
 
 /**
  * Project AprilTag corners into (u,v) camera coordinates, for testing.

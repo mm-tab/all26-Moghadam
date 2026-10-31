@@ -10,10 +10,9 @@ import org.team100.lib.state.ControlR1;
 import org.team100.lib.state.StateR1;
 import org.team100.lib.subsystems.six_dof.SixDofArm;
 import org.team100.lib.util.StrUtil;
-
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.numbers.N6;
+import org.wpilib.math.geometry.Pose3d;
+import org.wpilib.math.linalg.Vector;
+import org.wpilib.math.numbers.N6;
 
 /**
  * Move the arm to the goal, endlessly.

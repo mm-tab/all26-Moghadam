@@ -24,12 +24,12 @@ import org.team100.lib.sensor.position.absolute.wpi.AS5048RotaryPositionSensor;
 import org.team100.lib.sensor.position.incremental.IncrementalEncoder;
 import org.team100.lib.servo.AngularPositionServo;
 import org.team100.lib.servo.OnboardAngularPositionServo;
+import org.team100.lib.util.CanBusId;
 import org.team100.lib.util.CanId;
 import org.team100.lib.util.RoboRioChannel;
-
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.framework.RobotBase;
 
 /**
  * Demonstrates how to assemble a one-dimensional subsystem with positional
@@ -96,7 +96,7 @@ public class RotaryPositionSubsystem1d extends SubsystemBase {
             PIDConstants pid = PIDConstants.makeVelocityPID(0.05);
             Friction friction = new Friction(0.100, 0.100, 0.0, 0.1);
             KrakenX60Motor motor = new KrakenX60Motor(
-                    log, currentLog, new CanId(1),
+                    log, currentLog, new CanId(1), new CanBusId(0),
                     NeutralMode100.COAST, MotorPhase.REVERSE,
                     new CurrentLimit(statorLimit, supplyLimit), friction, pid);
             RotaryPositionSensor sensor = new AS5048RotaryPositionSensor(
@@ -119,7 +119,7 @@ public class RotaryPositionSubsystem1d extends SubsystemBase {
         }
     }
 
-    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
     //
     // ACTIONS
     //
@@ -133,7 +133,7 @@ public class RotaryPositionSubsystem1d extends SubsystemBase {
         m_servo.setPositionDirect(goal, 0);
     }
 
-    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
     //
     // COMMANDS
     //

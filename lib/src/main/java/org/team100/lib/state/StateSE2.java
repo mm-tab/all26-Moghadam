@@ -6,11 +6,11 @@ import org.team100.lib.geometry.se2.WaypointSE2;
 import org.team100.lib.path.se2.PathSE2Point;
 import org.team100.lib.subsystems.swerve.kinodynamics.SwerveKinodynamics;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.interpolation.Interpolatable;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Translation2d;
+import org.wpilib.math.interpolation.Interpolatable;
+import org.wpilib.math.kinematics.ChassisVelocities;
 
 /**
  * Describes the state of rigid body transformations in two dimensions, the
@@ -116,8 +116,8 @@ public class StateSE2 implements Interpolatable<StateSE2> {
     }
 
     /** Robot-relative speeds. */
-    public ChassisSpeeds chassisSpeeds() {
-        return SwerveKinodynamics.toInstantaneousChassisSpeeds(velocity(), rotation());
+    public ChassisVelocities ChassisVelocities() {
+        return SwerveKinodynamics.toInstantaneousChassisVelocities(velocity(), rotation());
     }
 
     public StateR1 x() {

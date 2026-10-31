@@ -13,12 +13,11 @@ import org.team100.lib.logging.LogPoller;
 import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.logging.Logging;
 import org.team100.lib.util.Banner;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.CommandScheduler;
+import org.wpilib.command2.button.Trigger;
+import org.wpilib.system.RobotController;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Robot extends TimedRobot100 {
     enum Protocol {
@@ -35,7 +34,6 @@ public class Robot extends TimedRobot100 {
     public Robot() {
         Banner.printBanner();
         Experiments.INSTANCE.show();
-        DriverStation.silenceJoystickConnectionWarning(true);
         RobotController.setBrownoutVoltage(6.3); // RoboRIO 1.0 value
         LoggerFactory robotLog = Logging.root();
         m_controller = new DriverXboxControl(robotLog, 0);

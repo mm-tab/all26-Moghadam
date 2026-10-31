@@ -3,8 +3,7 @@ package org.team100.lib.util;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
-
-import edu.wpi.first.math.filter.LinearFilter;
+import org.wpilib.math.filter.LinearFilter;
 
 public class LowPassDerivativeTest {
     private static final boolean DEBUG = false;

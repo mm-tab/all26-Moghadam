@@ -15,8 +15,9 @@ import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.logging.LoggerFactory.DoubleArrayLogger;
 import org.team100.lib.state.StateSE2;
 import org.team100.lib.visualization.VizUtil;
+import org.wpilib.math.geometry.Pose2d;
 
-import edu.wpi.first.math.geometry.Pose2d;
+
 
 /**
  * Provide a pose estimate with manual control.

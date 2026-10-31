@@ -2,8 +2,8 @@ package org.team100.lib.uncertainty;
 
 import org.team100.lib.util.StrUtil;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.interpolation.Interpolatable;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.interpolation.Interpolatable;
 
 /** Container for a pose and its uncertainty. */
 public class NoisyPose2d implements Interpolatable<NoisyPose2d> {

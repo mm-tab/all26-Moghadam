@@ -5,8 +5,7 @@ import java.util.List;
 import org.team100.lib.config.CurrentLimit;
 import org.team100.lib.config.Friction;
 import org.team100.lib.config.PIDConstants;
-import org.team100.lib.dynamics.r.RDynamics;
-import org.team100.lib.dynamics.r.RDynamicsAnalytic;
+import org.team100.lib.dynamics.p.PDynamics;
 import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.logging.TotalCurrentLog;
 import org.team100.lib.motor.Motor;
@@ -19,38 +18,41 @@ import org.team100.lib.music.Player;
 import org.team100.lib.profile.r1.TrapezoidProfileR1;
 import org.team100.lib.reference.r1.ProfileReferenceR1;
 import org.team100.lib.reference.r1.ReferenceR1;
-import org.team100.lib.servo.AngularPositionServo;
-import org.team100.lib.servo.OutboardAngularPositionServo;
+import org.team100.lib.servo.LinearPositionServo;
+import org.team100.lib.servo.OutboardLinearPositionServo;
+import org.team100.lib.util.CanBusId;
 import org.team100.lib.util.CanId;
-
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.Commands;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.framework.RobotBase;
+import org.wpilib.math.util.MathUtil;
 
 /** Intake must be retracted at startup. */
 public class IntakeExtend extends SubsystemBase implements Music {
-    private static final boolean ENABLE = false;
-    private static final CanId CAN_ID = new CanId(19);
-    private static final CanId CAN_ID2 = new CanId(17);
-    private static final double gearRatio = 74.667;
+    private static final boolean ENABLE = true;
+    private static final CanId CAN_ID = new CanId(9);
+    private static final CanId CAN_ID2 = new CanId(10);
+    private static final CanBusId busId = new CanBusId(1);
+    private static final double gearRatio = 50.0 / 18.0;
+    private static final double gearDiameter = 0.025;
     private static final double RETRACTED_POSITION = 0;
     // seems fine, 3/12/26
-    private static final double EXTENDED_POSITION = 2.140017;
+    private static final double EXTENDED_POSITION = 0.4; // tune this from glass
 
-    private final AngularPositionServo m_servo;
-    private final AngularPositionServo m_Servo2;
+    private final LinearPositionServo m_servo;
+    private final LinearPositionServo m_Servo2;
 
     @SuppressWarnings("unused")
     public IntakeExtend(LoggerFactory parent, TotalCurrentLog currentLog) {
         LoggerFactory log = parent.type(this);
-        LoggerFactory log1 = log.name("Extend1");
-        LoggerFactory log2 = log.name("Extend2");
+        LoggerFactory log1 = log.name("Extend Left");
+        LoggerFactory log2 = log.name("Extend Right");
 
         // Mass is zero for now because gravity coordinate doesn't match
         // the mechanism.
-        RDynamics dynamics = new RDynamicsAnalytic(0, 0, 0, 0);
-        TrapezoidProfileR1 profile = new TrapezoidProfileR1(4, 8, 0.1);
+        PDynamics dynamics = new PDynamics(0);
+        TrapezoidProfileR1 profile = new TrapezoidProfileR1(4, 30, 2);
         ReferenceR1 ref = new ProfileReferenceR1(log, () -> profile, 0.1, 0.05);
         final Motor motor;
         final Motor motor2;
@@ -60,32 +62,30 @@ public class IntakeExtend extends SubsystemBase implements Music {
             // tuned 3/12/26
             PIDConstants pid = PIDConstants.makePositionPID(1);
             motor = new KrakenX44Motor(
-                    log1, currentLog, CAN_ID,
-                    NeutralMode100.COAST, MotorPhase.REVERSE,
+                    log1, currentLog, CAN_ID, busId,
+                    NeutralMode100.COAST, MotorPhase.FORWARD,
                     new CurrentLimit(20, 40),
                     friction, pid);
             motor2 = new KrakenX44Motor(
-                    log2, currentLog, CAN_ID2,
-                    NeutralMode100.COAST, MotorPhase.FORWARD,
+                    log2, currentLog, CAN_ID2, busId,
+                    NeutralMode100.COAST, MotorPhase.REVERSE,
                     new CurrentLimit(20, 40),
                     friction, pid);
         } else {
             motor = new SimulatedMotor(log1, 600);
             motor2 = new SimulatedMotor(log2, 600);
         }
-        m_servo = OutboardAngularPositionServo.make(
-                log1, motor, dynamics, ref, gearRatio,
-                RETRACTED_POSITION, RETRACTED_POSITION, EXTENDED_POSITION);
-        m_Servo2 = OutboardAngularPositionServo.make(
-                log2, motor2, dynamics, ref, gearRatio,
-                RETRACTED_POSITION, RETRACTED_POSITION, EXTENDED_POSITION);
+        m_servo = OutboardLinearPositionServo.make(
+                log1, motor, dynamics, ref, gearRatio, gearDiameter);
+        m_Servo2 = OutboardLinearPositionServo.make(
+                log2, motor2, dynamics, ref, gearRatio, gearDiameter);
     }
 
     /** Current position is out, or nearly so */
     public boolean isOut() {
-        return MathUtil.isNear(m_servo.getUnwrappedPositionRad(), EXTENDED_POSITION, 1)
+        return MathUtil.isNear(m_servo.getPosition(), EXTENDED_POSITION, 1)
                 &&
-                MathUtil.isNear(m_Servo2.getUnwrappedPositionRad(), EXTENDED_POSITION, 1);
+                MathUtil.isNear(m_Servo2.getPosition(), EXTENDED_POSITION, 1);
     }
 
     /**
@@ -110,6 +110,32 @@ public class IntakeExtend extends SubsystemBase implements Music {
                 () -> actuateWithProfile(EXTENDED_POSITION))
                 .finallyDo(this::stopServo)
                 .withName("Intake Extend GoToExtendedPositionEndlessly");
+    }
+
+    public Command AgitationPosition() {
+        return runOnce(this::reset)
+                .andThen(
+                        Commands.repeatingSequence(
+                                run(() -> actuateWithVelocity(0.5)).withTimeout(0.175),
+                                run(() -> actuateWithVelocity(-0.5)).withTimeout(0.175)))
+                .finallyDo(this::stopServo)
+                .withName("Agitiate");
+    }
+
+    public Command MoveBackward() {
+        return startRun(
+                this::reset,
+                () -> actuateWithVelocity(-2))
+                .finallyDo(this::stopServo)
+                .withName("Agitiate");
+    }
+
+    public Command MoveForward() {
+        return startRun(
+                this::reset,
+                () -> actuateWithVelocity(2))
+                .finallyDo(this::stopServo)
+                .withName("Agitiate");
     }
 
     /** Servo is at goal. False immediately after reset. */
@@ -140,23 +166,23 @@ public class IntakeExtend extends SubsystemBase implements Music {
                 .withName("Stop Intake Extend");
     }
 
-    /** For testing friction only */
-    public Command setVelocity(double rad_S) {
-        return startRun(
-                this::reset,
-                () -> {
-                    m_servo.setVelocity(rad_S);
-                    m_Servo2.setVelocity(rad_S);
-                })
-                .withName("set velocity");
-    }
+    // /** For testing friction only */
+    // public Command setVelocity(double rad_S) {
+    // return startRun(
+    // this::reset,
+    // () -> {
+    // m_servo.setVelocity(rad_S);
+    // m_Servo2.setVelocity(rad_S);
+    // })
+    // .withName("set velocity");
+    // }
 
     public Command setPosition(double rad) {
         return startRun(
                 this::reset,
                 () -> {
-                    m_servo.actuateWithProfile(rad);
-                    m_Servo2.actuateWithProfile(rad);
+                    m_servo.setPositionProfiled(rad);
+                    m_Servo2.setPositionProfiled(rad);
                 })
                 .withName("set position");
     }
@@ -174,8 +200,6 @@ public class IntakeExtend extends SubsystemBase implements Music {
         return List.of(m_servo, m_Servo2);
     }
 
-    /////////////////////////////////////////
-
     private void stopServo() {
         m_servo.stop();
         m_Servo2.stop();
@@ -187,12 +211,17 @@ public class IntakeExtend extends SubsystemBase implements Music {
     }
 
     private void actuateWithProfile(double value) {
-        m_servo.actuateWithProfile(value);
-        m_Servo2.actuateWithProfile(value);
+        m_servo.setPositionProfiled(value);
+        m_Servo2.setPositionProfiled(value);
+    }
+
+    private void actuateWithVelocity(double value) {
+        m_servo.setVelocity(value);
+        m_Servo2.setVelocity(value);
     }
 
     public boolean atExtendedPosition() {
-        return MathUtil.isNear(m_servo.getUnwrappedPositionRad(), EXTENDED_POSITION, 0.1)
-                && MathUtil.isNear(m_Servo2.getUnwrappedPositionRad(), EXTENDED_POSITION, 0.1);
+        return MathUtil.isNear(m_servo.getPosition(), EXTENDED_POSITION, 0.1)
+                && MathUtil.isNear(m_Servo2.getPosition(), EXTENDED_POSITION, 0.1);
     }
 }

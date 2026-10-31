@@ -1,7 +1,7 @@
 package org.team100.frc2026.auton;
 
-import static edu.wpi.first.wpilibj2.command.Commands.parallel;
-import static edu.wpi.first.wpilibj2.command.Commands.sequence;
+import static org.wpilib.command2.Commands.parallel;
+import static org.wpilib.command2.Commands.sequence;
 
 import java.util.List;
 import java.util.function.Function;
@@ -22,11 +22,11 @@ import org.team100.lib.trajectory.se2.TrajectorySE2Factory;
 import org.team100.lib.trajectory.se2.TrajectorySE2Planner;
 import org.team100.lib.trajectory.se2.constraint.TimingConstraint;
 import org.team100.lib.trajectory.se2.constraint.TimingConstraintFactory;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import org.team100.lib.trajectory.se2.constraint.VelocityLimitRegionConstraint;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.Commands;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
 
 /** An example of a simple sequence */
 public class CenterHalfSweepAuton implements AnnotatedCommand {
@@ -59,40 +59,40 @@ public class CenterHalfSweepAuton implements AnnotatedCommand {
         // Intake, score
         command = sequence(
                 parallel(
-                        IntakeSetUp.until(IntakeSetUp::isDone).withTimeout(8),
+                        IntakeSetUp.until(IntakeSetUp::isDone).withTimeout(6),
                         // Assumed that the intake shouldn't deploy over the bump
                         sequence(
                                 Commands.waitUntil(() -> FieldConstants2026
                                         .isInNeutralZone(machinery.m_drive.getState().translation())),
-                                (machinery.m_intakeExtend.goToExtendedPosition()
+                                parallel(machinery.m_intakeExtend.goToExtendedPosition()
                                         .andThen(machinery.m_intake.intake())).withTimeout(3),
 
                                 Commands.waitUntil(() -> FieldConstants2026
                                         .isInAllianceZone(machinery.m_drive.getState().translation())),
                                 parallel(
                                         machinery.m_intake.stop(),
-                                        machinery.m_intakeExtend.goToRetractedPosition(),
-                                        machinery.m_shooter.auto()))));
+                                        machinery.m_intakeExtend.AgitationPosition(),
+                                        machinery.m_feeder.proportional(),
+                                        machinery.m_conveyor.convey(),
+                                        machinery.m_shooter.shooterFullspeed()))));
     }
 
     @Override
     public String name() {
-        return "Half Sweep from Center";
+        return "Half Sweep from left";
     }
 
     TrajectorySE2 t1(Pose2d startingPose) {
         List<WaypointSE2> waypoints = List.of(
                 new WaypointSE2(startingPose,
-                        new DirectionSE2(0, 1, 0), 1),
-                new WaypointSE2(StartingPositions.LEFT_BUMP,
-                        new DirectionSE2(1, 0, 0), 1),
+                        new DirectionSE2(1, 0, 0), Math.PI),
                 new WaypointSE2(AutonPositions.ABOVE_BALL_FIELD,
                         new DirectionSE2(1, 1, 0), 1),
                 new WaypointSE2(AutonPositions.MIDDLE_BALL_FIELD,
                         new DirectionSE2(0, -1, 0), 1),
-                new WaypointSE2(new Pose2d(6.5, 5.5, new Rotation2d(0 * (Math.PI / 180))),
+                new WaypointSE2(AutonPositions.ABOVE_BALL_FIELD,
                         new DirectionSE2(-1, 0, 0), 1),
-                new WaypointSE2(StartingPositions.LEFT_BUMP,
+                new WaypointSE2(StartingPositions.LEFT_TRENCH,
                         new DirectionSE2(-1, 0, 0), 1),
                 new WaypointSE2(AutonPositions.SHOOT_LEFT,
                         new DirectionSE2(-1, -1, 0), 1));
@@ -106,7 +106,7 @@ public class CenterHalfSweepAuton implements AnnotatedCommand {
 
     @Override
     public Pose2d start() {
-        return AutonPositions.CENTER;
+        return StartingPositions.LEFT_TRENCH;
     }
 
     @Override

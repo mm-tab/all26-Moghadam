@@ -1,7 +1,7 @@
 package org.team100.frc2025.CalgamesArm;
 
-import static edu.wpi.first.wpilibj2.command.Commands.select;
-import static edu.wpi.first.wpilibj2.command.Commands.sequence;
+import static org.wpilib.command2.Commands.select;
+import static org.wpilib.command2.Commands.sequence;
 
 import java.util.List;
 import java.util.Map;
@@ -52,15 +52,15 @@ import org.team100.lib.state.StateSE2;
 import org.team100.lib.subsystems.prr.SubsystemPRR;
 import org.team100.lib.subsystems.prr.commands.FollowJointProfiles;
 import org.team100.lib.subsystems.se2.PositionSubsystemSE2;
+import org.team100.lib.util.CanBusId;
 import org.team100.lib.util.CanId;
 import org.team100.lib.util.RoboRioChannel;
 import org.team100.lib.util.StrUtil;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.framework.RobotBase;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
 
 public class CalgamesMech extends SubsystemBase
         implements Music, PositionSubsystemSE2, SubsystemPRR {
@@ -69,8 +69,7 @@ public class CalgamesMech extends SubsystemBase
 
     ////////////////////////////////////////////////////////
     ///
-    /// CANONICAL CONFIGS
-    /// These are used with profiles.
+    /// CANONICAL CONFIGS These are used with profiles.
     ///
     public static final PRRConfig HOME = new PRRConfig(0, 0, 0);
     private static final PRRConfig CORAL_GROUND_PICK = new PRRConfig(0, -1.83, -0.12);
@@ -82,8 +81,7 @@ public class CalgamesMech extends SubsystemBase
 
     ////////////////////////////////////////////////////////
     ///
-    /// CANONICAL POSES
-    /// These are used with trajectories.
+    /// CANONICAL POSES These are used with trajectories.
     ///
     public static final Pose2d L2 = new Pose2d(0.56, 0.54, rad(2.0));
     public static final Pose2d L3 = new Pose2d(0.94, 0.56, rad(1.7));
@@ -185,6 +183,7 @@ public class CalgamesMech extends SubsystemBase
             elevatorFrontMotor = new KrakenX60Motor(
                     elevatorfrontLog, currentLog,
                     new CanId(11),
+                    new CanBusId(0),
                     NeutralMode100.BRAKE, MotorPhase.REVERSE,
                     new CurrentLimit(100, 100),
                     new Friction(0.100, 0.100, 0.005, 0.5),
@@ -192,6 +191,7 @@ public class CalgamesMech extends SubsystemBase
             elevatorBackMotor = new KrakenX60Motor(
                     elevatorbackLog, currentLog,
                     new CanId(12),
+                    new CanBusId(0),
                     NeutralMode100.BRAKE, MotorPhase.FORWARD,
                     new CurrentLimit(100, 100),
                     new Friction(0.100, 0.100, 0.005, 0.5),
@@ -202,6 +202,7 @@ public class CalgamesMech extends SubsystemBase
             shoulderMotor = new KrakenX60Motor(
                     shoulderLog, currentLog,
                     new CanId(24),
+                    new CanBusId(0),
                     NeutralMode100.BRAKE, MotorPhase.REVERSE,
                     new CurrentLimit(100, 100),
                     new Friction(0.100, 0.100, 0.005, 0.5),
@@ -225,6 +226,7 @@ public class CalgamesMech extends SubsystemBase
             wristMotor = new KrakenX60Motor(
                     wristLog, currentLog,
                     new CanId(22),
+                    new CanBusId(0),
                     NeutralMode100.COAST, MotorPhase.FORWARD,
                     new CurrentLimit(40, 60),
                     new Friction(0.100, 0.100, 0.005, 0.5),
@@ -610,13 +612,11 @@ public class CalgamesMech extends SubsystemBase
         return x < 1 && Math.abs(y) < 1;
     }
 
-    /////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
 
     public PRRKinematics getKinematics() {
         return m_kinematics;
     }
-
-    /////////////////////////////////////////////////////////////
 
     /** Elevator torque off, shoulder and wrist hold position at zero. */
     private void rest() {

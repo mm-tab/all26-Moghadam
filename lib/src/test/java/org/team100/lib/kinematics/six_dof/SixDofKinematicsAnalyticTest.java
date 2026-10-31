@@ -9,10 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.team100.lib.geometry.six_dof.SixDofConfig;
 import org.team100.lib.geometry.six_dof.SixDofPose;
 import org.team100.lib.testing.TestUtil;
-
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Translation2d;
+import org.wpilib.math.geometry.Pose3d;
+import org.wpilib.math.geometry.Rotation3d;
+import org.wpilib.math.geometry.Translation2d;
 
 public class SixDofKinematicsAnalyticTest {
     @Test
@@ -73,6 +72,7 @@ public class SixDofKinematicsAnalyticTest {
         Pose3d p = new Pose3d(0.5, 0, 0.5,
                 new Rotation3d(0, Math.PI / 2, 0));
         List<SixDofConfig> q = k.inverse(p, null, null, null);
+
         assertEquals(8, q.size());
         TestUtil.verify(new SixDofConfig(0, 1.804, -2.259, 0, -1.116, 0), q.get(0));
         TestUtil.verify(new SixDofConfig(0, 1.804, -2.259, 3.141, 1.116, 3.141), q.get(1));

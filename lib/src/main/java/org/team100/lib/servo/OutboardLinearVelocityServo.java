@@ -15,7 +15,7 @@ import org.team100.lib.reference.r1.VelocityReferenceR1;
 import org.team100.lib.reference.r1.VelocitySetpointsR1;
 import org.team100.lib.state.VelocityControlR1;
 
-import edu.wpi.first.math.MathUtil;
+import org.wpilib.math.util.MathUtil;
 
 /**
  * Profiled or direct velocity control using the feedback controller in the

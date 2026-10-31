@@ -1,11 +1,12 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.RobotBase;
+import org.wpilib.framework.RobotBase;
 
 public final class Main {
-  private Main() {}
+    private Main() {
+    }
 
-  public static void main(String... args) {
-    RobotBase.startRobot(Robot::new);
-  }
+    public static void main(String... args) {
+        RobotBase.startRobot(Robot.class);
+    }
 }

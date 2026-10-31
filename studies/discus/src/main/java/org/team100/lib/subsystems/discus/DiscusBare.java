@@ -14,11 +14,11 @@ import org.team100.lib.motor.ctre.Falcon500Motor;
 import org.team100.lib.motor.sim.SimulatedMotor;
 import org.team100.lib.sensor.position.absolute.ProxyRotaryPositionSensor;
 import org.team100.lib.sensor.position.absolute.RotaryPositionSensor;
+import org.team100.lib.util.CanBusId;
 import org.team100.lib.util.CanId;
-
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.framework.RobotBase;
 
 /**
  * Bare-motor version of the discus mechanism. Just takes
@@ -41,6 +41,7 @@ public class DiscusBare extends SubsystemBase {
                     logger,
                     currentLog,
                     new CanId(36),
+                    new CanBusId(0),
                     NeutralMode100.COAST,
                     MotorPhase.REVERSE,
                     new CurrentLimit(STATOR_LIMIT, SUPPLY_LIMIT),

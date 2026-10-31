@@ -21,9 +21,9 @@ import org.team100.lib.subsystems.swerve.kinodynamics.SwerveKinodynamicsFactory;
 import org.team100.lib.subsystems.swerve.module.SwerveModuleCollection;
 import org.team100.lib.testing.Timeless;
 import org.team100.lib.uncertainty.IsotropicNoiseSE2;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Twist2d;
+import org.wpilib.math.kinematics.ChassisVelocities;
 
 class SwerveDriveSubsystemTest implements Timeless {
 
@@ -63,7 +63,7 @@ class SwerveDriveSubsystemTest implements Timeless {
         assertEquals(0, state.x().v(), DELTA);
 
         // go 1 m/s in +x
-        drive.setChassisSpeeds(new ChassisSpeeds(1, 0, 0), ChassisAcceleration.ZERO);
+        drive.setChassisVelocities(new ChassisVelocities(1, 0, 0), ChassisAcceleration.ZERO);
 
         stepTime();
 
@@ -75,7 +75,7 @@ class SwerveDriveSubsystemTest implements Timeless {
         assertEquals(0.02, state1.x().x(), DELTA);
         assertEquals(1.00, state1.x().v(), DELTA);
 
-        drive.setChassisSpeeds(new ChassisSpeeds(1, 0, 0), ChassisAcceleration.ZERO);
+        drive.setChassisVelocities(new ChassisVelocities(1, 0, 0), ChassisAcceleration.ZERO);
 
         stepTime();
         StateSE2 state2 = drive.getState();
@@ -84,7 +84,7 @@ class SwerveDriveSubsystemTest implements Timeless {
         assertEquals(0.04, state2.x().x(), DELTA);
         assertEquals(1.00, state2.x().v(), DELTA);
 
-        drive.setChassisSpeeds(new ChassisSpeeds(1, 0, 0), ChassisAcceleration.ZERO);
+        drive.setChassisVelocities(new ChassisVelocities(1, 0, 0), ChassisAcceleration.ZERO);
 
         stepTime();
         StateSE2 state3 = drive.getState();

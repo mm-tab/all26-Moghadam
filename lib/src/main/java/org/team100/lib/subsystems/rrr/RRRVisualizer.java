@@ -3,14 +3,13 @@ package org.team100.lib.subsystems.rrr;
 import java.util.function.Supplier;
 
 import org.team100.lib.geometry.rrr.RRRConfig;
-
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.util.Color8Bit;
+import org.wpilib.math.geometry.Translation2d;
+import org.wpilib.smartdashboard.Mechanism2d;
+import org.wpilib.smartdashboard.MechanismLigament2d;
+import org.wpilib.smartdashboard.MechanismRoot2d;
+import org.wpilib.smartdashboard.SmartDashboard;
+import org.wpilib.util.Color;
+import org.wpilib.util.Color8Bit;
 
 /**
  * Use the glass "mechanism" display to show the arm position.
@@ -19,8 +18,8 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
  */
 public class RRRVisualizer {
     private static final int WIDTH = 10;
-    private static final Color8Bit COLOR = new Color8Bit(Color.kOrangeRed);
-    private static final Color8Bit COLOR2 = new Color8Bit(Color.kWhite);
+    private static final Color8Bit COLOR = new Color8Bit(Color.ORANGE_RED);
+    private static final Color8Bit COLOR2 = new Color8Bit(Color.WHITE);
     private static final double SCALE = 150;
 
     private final RRRArm m_arm;

@@ -14,13 +14,11 @@ import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.logging.Logging;
 import org.team100.lib.logging.RobotLog;
 import org.team100.lib.util.Startup;
-
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.CommandScheduler;
+import org.wpilib.networktables.NetworkTableInstance;
 
 public class Robot2025 extends TimedRobot100 {
-
     private final RobotLog m_robotLog;
     private final Machinery2025 m_machinery;
     private final AllAutons2025 m_allAutons;
@@ -37,7 +35,6 @@ public class Robot2025 extends TimedRobot100 {
         m_allAutons = new AllAutons2025(log, m_machinery);
         m_binder = new Binder2025(log, field, m_machinery);
         m_binder.bind();
-
         Prewarmer2025.init(m_machinery);
     }
 
@@ -58,7 +55,7 @@ public class Robot2025 extends TimedRobot100 {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //
     // INITIALIZERS, DO NOT CHANGE THESE
     //
@@ -83,14 +80,10 @@ public class Robot2025 extends TimedRobot100 {
         m_allAutons.close();
     }
 
-    ///////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
     //
     // LEAVE ALL THESE EMPTY
     //
-
-    @Override
-    public void robotInit() {
-    }
 
     @Override
     public void simulationInit() {
@@ -98,10 +91,6 @@ public class Robot2025 extends TimedRobot100 {
 
     @Override
     public void disabledInit() {
-    }
-
-    @Override
-    public void testInit() {
     }
 
     @Override
@@ -119,9 +108,5 @@ public class Robot2025 extends TimedRobot100 {
     @Override
     public void teleopPeriodic() {
     }
-
-    @Override
-    public void testPeriodic() {
-    }
-
 }
+

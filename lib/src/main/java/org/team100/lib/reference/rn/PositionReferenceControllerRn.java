@@ -1,8 +1,7 @@
 package org.team100.lib.reference.rn;
 
 import org.team100.lib.subsystems.rn.PositionSubsystemRn;
-
-import edu.wpi.first.math.Num;
+import org.wpilib.math.util.Num;
 
 /**
  * Actuates a positional N-DOF subsystem.

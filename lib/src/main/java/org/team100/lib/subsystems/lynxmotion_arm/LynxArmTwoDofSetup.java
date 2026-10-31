@@ -3,27 +3,26 @@ package org.team100.lib.subsystems.lynxmotion_arm;
 import static org.team100.lib.util.TriggerUtil.whileTrue;
 
 import org.team100.lib.subsystems.lynxmotion_arm.commands.MoveCommandTwoDof;
-
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Commands;
+import org.wpilib.command2.Commands;
+import org.wpilib.driverstation.Gamepad;
+import org.wpilib.math.geometry.Translation2d;
 
 public class LynxArmTwoDofSetup implements Runnable {
     private final LynxArmTwoDof m_arm;
     private final LynxArmVisualizer m_viz;
 
-    public LynxArmTwoDofSetup(XboxController m_controller) {
+    public LynxArmTwoDofSetup(Gamepad m_controller) {
         m_arm = new LynxArmTwoDof();
         m_viz = new LynxArmVisualizer(m_arm::getPose);
 
         MoveCommandTwoDof move1 = m_arm.moveTo(new Translation2d(0.2, 0.1));
-        whileTrue(m_controller::getAButton,
+        whileTrue(m_controller::getSouthFaceButton,
                 move1);
         MoveCommandTwoDof move2 = m_arm.moveTo(new Translation2d(0.2, 0));
-        whileTrue(m_controller::getBButton,
+        whileTrue(m_controller::getEastFaceButton,
                 move2);
         MoveCommandTwoDof move3 = m_arm.moveTo(new Translation2d(0.3, 0.1));
-        whileTrue(m_controller::getXButton,
+        whileTrue(m_controller::getWestFaceButton,
                 move3);
 
         MoveCommandTwoDof move4 = m_arm.moveTo(new Translation2d(0.2, 0.05));
@@ -32,7 +31,7 @@ public class LynxArmTwoDofSetup implements Runnable {
         MoveCommandTwoDof move7 = m_arm.moveTo(new Translation2d(0.4, 0.05));
         MoveCommandTwoDof move8 = m_arm.moveTo(new Translation2d(0.4, 0.0));
         MoveCommandTwoDof move9 = m_arm.moveTo(new Translation2d(0.4, 0.05));
-        whileTrue(m_controller::getYButton,
+        whileTrue(m_controller::getNorthFaceButton,
                 Commands.sequence(
                         move4.until(move4::done),
                         move5.until(move5::done),

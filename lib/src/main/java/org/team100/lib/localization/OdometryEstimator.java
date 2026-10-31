@@ -21,9 +21,9 @@ import org.team100.lib.uncertainty.OdometryNoise;
 import org.team100.lib.uncertainty.VariableR1;
 import org.team100.lib.util.StrUtil;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Twist2d;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Twist2d;
 
 /**
  * Makes a SwerveState estimate with new odometry by selecting the most-recent
@@ -194,8 +194,8 @@ public class OdometryEstimator {
         // Use the fused rotation increment with the odometry cartesian increment.
         twist = new Twist2d(twist.dx, twist.dy, fusedRotationIncrement.mean());
 
-        // The new pose is the twist applied to the old pose.
-        Pose2d newPose = previousState.state().pose().exp(twist);
+        // The new pose is just the twist applied to the old pose.
+        Pose2d newPose = previousState.state().pose().plus(twist.exp());
 
         // Compute a new velocity using backward finite difference.
         VelocitySE2 velocity = VelocitySE2.velocity(previousState.state().pose(), newPose, dt);

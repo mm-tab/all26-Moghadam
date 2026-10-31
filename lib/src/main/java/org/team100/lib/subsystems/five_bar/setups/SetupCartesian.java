@@ -1,18 +1,17 @@
 package org.team100.lib.subsystems.five_bar.setups;
 
-import static edu.wpi.first.wpilibj2.command.Commands.print;
 import static org.team100.lib.util.TriggerUtil.onTrue;
 import static org.team100.lib.util.TriggerUtil.whileTrue;
+import static org.wpilib.command2.Commands.print;
 
 import org.team100.lib.kinematics.five_bar.Scenario;
 import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.logging.TotalCurrentLog;
 import org.team100.lib.subsystems.five_bar.FiveBarCartesian;
 import org.team100.lib.visualization.FiveBarVisualization;
-
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Commands;
+import org.wpilib.command2.Commands;
+import org.wpilib.driverstation.Gamepad;
+import org.wpilib.math.geometry.Translation2d;
 
 public class SetupCartesian implements Runnable {
     private static final double XMAX = 0.15;
@@ -22,7 +21,7 @@ public class SetupCartesian implements Runnable {
 
     public SetupCartesian(LoggerFactory log, Scenario scenario) {
         TotalCurrentLog currentLog = new TotalCurrentLog(log);
-        XboxController controller = new XboxController(0);
+        Gamepad controller = new Gamepad(0);
 
         m_fiveBar = new FiveBarCartesian(log, currentLog, scenario);
         m_viz = new FiveBarVisualization(scenario, m_fiveBar::getJointPositions);
@@ -35,9 +34,9 @@ public class SetupCartesian implements Runnable {
 
         // These bindings are remembered by the trigger event loop, so we don't need to
         // retain them.
-        whileTrue(controller::getAButton,
+        whileTrue(controller::getSouthFaceButton,
                 m_fiveBar.home());
-        onTrue(controller::getBButton,
+        onTrue(controller::getEastFaceButton,
                 m_fiveBar.zero());
 
         // Make a little square. Also illustrates "print" commands for
@@ -46,7 +45,7 @@ public class SetupCartesian implements Runnable {
         // a little square.
         double XX = 0.05;
         double YY = 0.05;
-        whileTrue(controller::getXButton,
+        whileTrue(controller::getWestFaceButton,
                 Commands.sequence(
                         print("move to origin"),
                         m_fiveBar.move(new Translation2d(0, 0)),

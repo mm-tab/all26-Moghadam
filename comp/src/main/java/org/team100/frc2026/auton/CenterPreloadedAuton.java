@@ -1,8 +1,8 @@
 package org.team100.frc2026.auton;
 
-import static edu.wpi.first.wpilibj2.command.Commands.parallel;
-import static edu.wpi.first.wpilibj2.command.Commands.sequence;
-import static edu.wpi.first.wpilibj2.command.Commands.waitSeconds;
+import static org.wpilib.command2.Commands.parallel;
+import static org.wpilib.command2.Commands.sequence;
+import static org.wpilib.command2.Commands.waitSeconds;
 
 import java.util.List;
 import java.util.function.Function;
@@ -22,9 +22,9 @@ import org.team100.lib.trajectory.se2.TrajectorySE2Factory;
 import org.team100.lib.trajectory.se2.TrajectorySE2Planner;
 import org.team100.lib.trajectory.se2.constraint.TimingConstraint;
 import org.team100.lib.trajectory.se2.constraint.TimingConstraintFactory;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj2.command.Command;
+import org.team100.lib.trajectory.se2.constraint.VelocityLimitRegionConstraint;
+import org.wpilib.command2.Command;
+import org.wpilib.math.geometry.Pose2d;
 
 /** An example of a simple sequence */
 public class CenterPreloadedAuton implements AnnotatedCommand {
@@ -58,7 +58,9 @@ public class CenterPreloadedAuton implements AnnotatedCommand {
         command = sequence(
                 parallel(
                         ScoreSetUp.until(ScoreSetUp::isDone).withTimeout(3.5),
-                        machinery.m_shooter.auto()),
+                        machinery.m_shooter.testRun()),
+                        machinery.m_feeder.proportional(),
+                        machinery.m_conveyor.convey(),
                 waitSeconds(5),
                 machinery.m_shooter.stop().withTimeout(1));
     }

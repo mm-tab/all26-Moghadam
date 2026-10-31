@@ -7,6 +7,7 @@ import org.team100.lib.logging.LoggerFactory;
 import org.team100.lib.logging.TotalCurrentLog;
 import org.team100.lib.motor.MotorPhase;
 import org.team100.lib.motor.NeutralMode100;
+import org.team100.lib.util.CanBusId;
 import org.team100.lib.util.CanId;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -22,6 +23,7 @@ public class Neo550CANSparkMotor extends CANSparkMotor {
             LoggerFactory parent,
             TotalCurrentLog currentLog,
             CanId canId,
+            CanBusId busId,
             NeutralMode100 neutral,
             MotorPhase motorPhase,
             CurrentLimit limit,
@@ -30,7 +32,7 @@ public class Neo550CANSparkMotor extends CANSparkMotor {
             int averageDepth,
             int measurementPeriod) {
         super(parent, currentLog,
-                new SparkMax(canId.id, MotorType.kBrushless),
+                new SparkMax(busId.id, canId.id, MotorType.kBrushless),
                 neutral, motorPhase, limit, friction, pid,
                 0, averageDepth, measurementPeriod, false);
     }

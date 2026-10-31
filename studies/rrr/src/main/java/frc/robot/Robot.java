@@ -13,9 +13,8 @@ import org.team100.lib.util.Startup;
 import org.team100.rrr.auton.Autons;
 import org.team100.rrr.robot.Binder;
 import org.team100.rrr.robot.Machinery;
-
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.wpilib.command2.CommandScheduler;
+import org.wpilib.networktables.NetworkTableInstance;
 
 public class Robot extends TimedRobot100 {
     private final RobotLog m_robotLog;
@@ -29,7 +28,6 @@ public class Robot extends TimedRobot100 {
         Startup.start();
         LoggerFactory rootLogger = Logging.root();
         m_robotLog = new RobotLog(rootLogger);
-
         m_machinery = new Machinery(m_robotLog.totalCurrentLog());
         m_binder = new Binder(rootLogger, m_machinery);
         m_autons = new Autons(m_machinery);

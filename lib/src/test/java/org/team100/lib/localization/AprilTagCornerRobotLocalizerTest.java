@@ -16,12 +16,11 @@ import org.team100.lib.subsystems.swerve.module.state.SwerveModulePosition100;
 import org.team100.lib.subsystems.swerve.module.state.SwerveModulePositions;
 import org.team100.lib.uncertainty.IsotropicNoiseSE2;
 import org.team100.lib.uncertainty.VariableR1;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import org.wpilib.driverstation.Alliance;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Pose3d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Transform3d;
 
 public class AprilTagCornerRobotLocalizerTest {
     private static final double DELTA = 0.01;
@@ -31,13 +30,13 @@ public class AprilTagCornerRobotLocalizerTest {
     void test0() throws IOException {
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
-        Pose3d tag4pose = layout.getTagPose(Alliance.Red, 4).get();
+        Pose3d tag4pose = layout.getTagPose(Alliance.RED, 4).get();
         assertEquals(8.272, tag4pose.getX(), DELTA);
         assertEquals(1.914, tag4pose.getY(), DELTA);
         assertEquals(1.868, tag4pose.getZ(), DELTA);
 
         AprilTagCornerTranslator m_translator = new AprilTagCornerTranslator(
-                logger, layout, () -> Optional.of(Alliance.Red));
+                logger, layout, () -> Optional.of(Alliance.RED));
         BlipWithCorners tag4 = new BlipWithCorners(0, 4, 500, 600, 600, 600, 600, 500, 500, 500, new Transform3d());
         BlipWithCorners[] tags = new BlipWithCorners[] { tag4 };
         Camera camera = Camera.SIM0;
@@ -55,7 +54,7 @@ public class AprilTagCornerRobotLocalizerTest {
         // vision-only, watch the nudging
         AprilTagFieldLayoutWithCorrectOrientation layout = new AprilTagFieldLayoutWithCorrectOrientation(
                 "2025-reefscape.json");
-        Pose3d tag4pose = layout.getTagPose(Alliance.Red, 4).get();
+        Pose3d tag4pose = layout.getTagPose(Alliance.RED, 4).get();
         assertEquals(8.272, tag4pose.getX(), DELTA);
         assertEquals(1.914, tag4pose.getY(), DELTA);
         assertEquals(1.868, tag4pose.getZ(), DELTA);
@@ -88,7 +87,7 @@ public class AprilTagCornerRobotLocalizerTest {
         NudgingVisionEstimator visionUpdater = new NudgingVisionEstimator(
                 logger, history::getRecord);
         AprilTagCornerTranslator m_translator = new AprilTagCornerTranslator(
-                logger, layout, () -> Optional.of(Alliance.Red));
+                logger, layout, () -> Optional.of(Alliance.RED));
 
         Camera camera = Camera.SIM0;
         // watch the tag for 0.2 sec

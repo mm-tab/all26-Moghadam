@@ -1,6 +1,6 @@
 package org.team100.battery_tester;
 
-import edu.wpi.first.wpilibj.util.Color8Bit;
+import org.wpilib.util.Color8Bit;
 
 /**
  * Blackbody chromaticity and luminance, with some hacky luminance scaling to

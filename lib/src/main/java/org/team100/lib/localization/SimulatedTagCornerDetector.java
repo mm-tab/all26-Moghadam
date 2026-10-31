@@ -17,20 +17,19 @@ import org.team100.lib.geometry.GeometryUtil;
 import org.team100.lib.geometry.Metrics;
 import org.team100.lib.uncertainty.IsotropicNoiseSE2;
 import org.team100.lib.uncertainty.VisionNoise;
-
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.PubSubOption;
-import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.RobotBase;
+import org.wpilib.driverstation.Alliance;
+import org.wpilib.driverstation.MatchState;
+import org.wpilib.framework.RobotBase;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Pose3d;
+import org.wpilib.math.geometry.Rotation3d;
+import org.wpilib.math.geometry.Transform3d;
+import org.wpilib.math.geometry.Translation3d;
+import org.wpilib.math.linalg.Vector;
+import org.wpilib.math.numbers.N3;
+import org.wpilib.networktables.NetworkTableInstance;
+import org.wpilib.networktables.PubSubOption;
+import org.wpilib.networktables.StructArrayPublisher;
 
 /**
  * Copy of SimulatedTagDetector that publishes BlipWithCorners[].
@@ -105,7 +104,7 @@ public class SimulatedTagCornerDetector {
         m_inst = NetworkTableInstance.create();
         // This is a client just like the camera is a client.
         m_inst.setServer("localhost");
-        m_inst.startClient4("SimulatedTagDetector");
+        m_inst.startClient("SimulatedTagDetector");
         m_rand = new Random();
         m_corners = new CornersFromPose();
         for (Camera camera : m_cameras) {
@@ -115,7 +114,7 @@ public class SimulatedTagCornerDetector {
             m_publishers.put(
                     camera,
                     m_inst.getStructArrayTopic(
-                            name, BlipWithCorners.struct).publish(PubSubOption.keepDuplicates(true)));
+                            name, BlipWithCorners.struct).publish(PubSubOption.KEEP_DUPLICATES));
         }
     }
 
@@ -134,7 +133,7 @@ public class SimulatedTagCornerDetector {
         }
         if (DEBUG)
             System.out.println("simulated tag detector");
-        Optional<Alliance> opt = DriverStation.getAlliance();
+        Optional<Alliance> opt = MatchState.getAlliance();
         if (opt.isEmpty())
             return;
 
@@ -257,7 +256,7 @@ public class SimulatedTagCornerDetector {
         Rotation3d rnoise = new Rotation3d(
                 0, 0, n.rotation() * rand.getAsDouble())
                 .times(NOISE_RATIO);
-        r = r.plus(rnoise);
+        r = r.rotateBy(rnoise);
         // r = new Rotation3d(
         // r.getX() + n.rotation() * rand.getAsDouble(),
         // r.getY() + n.rotation() * rand.getAsDouble(),

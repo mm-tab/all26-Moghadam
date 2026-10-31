@@ -4,8 +4,8 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.wpilib.smartdashboard.SendableChooser;
+import org.wpilib.smartdashboard.SmartDashboard;
 
 /**
  * Controls Experiment enablement.
@@ -80,7 +80,7 @@ public class Experiments {
         return m_override.getOrDefault(experiment, m_enabled.get(experiment));
     }
 
-    ////////////////////////////////////////
+    /////////////////////////////////
 
     private String on(Experiment e) {
         return e.name() + " ON";

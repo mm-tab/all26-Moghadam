@@ -12,9 +12,7 @@ import org.team100.lib.motor.Motor;
 import org.team100.lib.state.StateR1;
 import org.team100.lib.util.LowPassDerivative;
 import org.team100.lib.util.Math100;
-
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.RobotState;
+import org.wpilib.driverstation.RobotState;
 
 /**
  * Relies on Cache and Takt, so you must put Cache.refresh() and Takt.update()
@@ -93,7 +91,7 @@ public class SimulatedMotor implements Motor {
 
     @Override
     public void setDutyCycle(double dutyCycle) {
-        final double output = MathUtil.clamp(
+        final double output = Math.clamp(
                 Math100.notNaN(dutyCycle), -1, 1);
         m_log_duty.log(() -> output);
         setVelocity(output * m_freeSpeedRad_S, 0);
@@ -122,7 +120,7 @@ public class SimulatedMotor implements Motor {
         if (DEBUG) {
             System.out.printf("motor %s set velocity %6.3f\n", m_log.getRoot(), velocityRad_S);
         }
-        m_velocityInput = MathUtil.clamp(
+        m_velocityInput = Math.clamp(
                 Math100.notNaN(velocityRad_S), -m_freeSpeedRad_S, m_freeSpeedRad_S);
         m_torqueInput = torqueNm;
         // you can't use velocity and position control at the same time
