@@ -101,7 +101,8 @@ public class MajorDisruptRBump implements AnnotatedCommand {
         List<WaypointSE2> waypoints = List.of(
                 new WaypointSE2(startingPose, new DirectionSE2(1, 0, 0), 1),
 
-                new WaypointSE2(new Pose2d(8, 2.5, new Rotation2d(165 * (Math.PI / 180))), new DirectionSE2(1, 0, 0),
+                new WaypointSE2(new Pose2d(8, 2.5, new Rotation2d(165 * (Math.PI / 180))),
+                 new DirectionSE2(1, 0, 0),
                         1),
                 new WaypointSE2(new Pose2d(8.1, 7, new Rotation2d(165 * (Math.PI / 180))), new DirectionSE2(1, 0, 0), 1)
 

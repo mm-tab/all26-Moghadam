@@ -1,4 +1,4 @@
-package org.team100.frc2026.auton;
+dhatspackage org.team100.frc2026.auton;
 
 import static edu.wpi.first.wpilibj2.command.Commands.parallel;
 import static edu.wpi.first.wpilibj2.command.Commands.repeatingSequence;

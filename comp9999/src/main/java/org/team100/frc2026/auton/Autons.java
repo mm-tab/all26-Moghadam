@@ -84,17 +84,11 @@ public class Autons {
                 machinery.m_swerveKinodynamics,
                 controller,
                 machinery));
-            m_autonChooser.add(new IntakeOutakeRStartSwoop(
+            m_autonChooser.add(new HStartIntakeOutake(
                 log,
                 machinery.m_swerveKinodynamics,
                 controller,
                 machinery));
-            m_autonChooser.add(new IntakeOutakeLStartSwoop(
-                log,
-                machinery.m_swerveKinodynamics,
-                controller,
-                machinery));
-
             
         // The following were from CVE in 2026
              
