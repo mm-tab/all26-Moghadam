@@ -1,8 +1,15 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2025.3.2"
+    id "edu.wpi.first.GradleRIO" version "2026.2.1"
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir "../../lib/src/main/java"
+        }
+    }
+}
 sourceSets {
     main {
         java {
