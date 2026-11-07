@@ -16,8 +16,7 @@ import org.team100.lib.coherence.Cache;
 import org.team100.lib.coherence.Takt;
 import org.team100.lib.config.CurrentLimit;
 import org.team100.lib.config.Friction;
-import org.team100.lib.config.PIDConstants;;
-import org.team100.lib.hid.DriverXBoxControl;
+import org.team100.lib.config.PIDConstants;
 import org.team100.lib.logging.LogPoller;
 import org.team100.lib.logging.Logging;
 import org.team100.lib.logging.RobotLog;
@@ -54,7 +53,7 @@ private final KrakenX44Motor m_motor;
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    PIDConstants pid = new PIDConstants()
+    PIDConstants pid = new PIDConstants();
     Friction friction = new Friction(0, 0, 0, 0);
     CurrentLimit limit = new CurrentLimit(10, 10 );
     MotorPhase phase = new MotorPhase.FOWARD;
