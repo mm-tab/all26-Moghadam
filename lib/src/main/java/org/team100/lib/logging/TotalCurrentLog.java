@@ -31,4 +31,9 @@ public class TotalCurrentLog {
                         .reduce(Double::sum)
                         .orElse(0.0));
     }
+
+    public TotalCurrentLog totalCurrentLog() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'totalCurrentLog'");
+    }
 }

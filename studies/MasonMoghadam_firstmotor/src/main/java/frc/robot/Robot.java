@@ -4,16 +4,35 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import org.team100.lib.framework.TimedRobot100;
+import org.team100.lib.logging.LoggerFactory;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team100.lib.motor.ctre.KrakenX44Motor;
+import org.team100.lib.motor.rev.NeoCANSparkMotor;
+import org.team100.lib.util.Startup;
+import org.team100.lib.coherence.Cache;
+import org.team100.lib.coherence.Takt;
+import org.team100.lib.config.CurrentLimit;
+import org.team100.lib.config.Friction;
+import org.team100.lib.config.PIDConstants;;
+import org.team100.lib.hid.DriverXBoxControl;
+import org.team100.lib.logging.LogPoller;
+import org.team100.lib.logging.Logging;
+import org.team100.lib.logging.RobotLog;
+import org.team100.lib.logging.TotalCurrentLog;
+import org.team100.lib.motor.MotorPhase;
+import org.team100.lib.motor.NeutralMode100;
+import org.team100.lib.util.CanId;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
  * this project, you must also update the Main.java file in the project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot100 {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
@@ -23,10 +42,34 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+private final KrakenX44Motor m_motor;
+
   public Robot() {
+    
+    Startup.start();
+    LoggerFactory log = Logging.root();
+    TotalCurrentLog robotLog = robotLog.totalCurrentLog();
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    PIDConstants pid = new PIDConstants()
+    Friction friction = new Friction(0, 0, 0, 0);
+    CurrentLimit limit = new CurrentLimit(10, 10 );
+    MotorPhase phase = new MotorPhase.FOWARD;
+    NeutralMode100 neutral = new NeutralMode100.COAST;
+    CanId canId2 = new CanId(2);
+    TotalCurrentLog currentLog = new TotalCurrentLog
+      
+    m_motor = new KrakenX44Motor(log.name("motor"), currentLog, canId2, neutral, phase, limit, friction, pid);
+
+    m_controller = new DriverXboxControl(log, 0);
+
+    
+     
+
+    
   }
 
   /**
