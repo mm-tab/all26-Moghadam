@@ -5,6 +5,7 @@
 package frc.robot;
 
 import org.team100.lib.framework.TimedRobot100;
+import org.team100.lib.hid.DriverXboxControl;
 import org.team100.lib.logging.LoggerFactory;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -35,35 +36,37 @@ public class Robot extends TimedRobot100 {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
+  private final RobotLog m_robotLog;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
+  private final DriverXboxControl m_control;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-private final KrakenX44Motor m_motor;
+  private final KrakenX44Motor m_motor;
 
   public Robot() {
     
     Startup.start();
     LoggerFactory log = Logging.root();
-    TotalCurrentLog robotLog = robotLog.totalCurrentLog();
+    m_robotLog = new RobotLog(log);
+    TotalCurrentLog totalCurrentLog = m_robotLog.totalCurrentLog();
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    PIDConstants pid = new PIDConstants();
+    PIDConstants pid = new PIDConstants(0,0,0,0,0,0);
     Friction friction = new Friction(0, 0, 0, 0);
     CurrentLimit limit = new CurrentLimit(10, 10 );
-    MotorPhase phase = new MotorPhase.FOWARD;
-    NeutralMode100 neutral = new NeutralMode100.COAST;
+    MotorPhase phase = MotorPhase.FORWARD;
+    NeutralMode100 neutral = NeutralMode100.COAST;
     CanId canId2 = new CanId(2);
-    TotalCurrentLog currentLog = new TotalCurrentLog
-      
-    m_motor = new KrakenX44Motor(log.name("motor"), currentLog, canId2, neutral, phase, limit, friction, pid);
 
-    m_controller = new DriverXboxControl(log, 0);
+      
+    m_motor = new KrakenX44Motor(log.name("motor"), totalCurrentLog , canId2, neutral, phase, limit, friction, pid);
+
+    m_control = new DriverXboxControl(log, 0);
 
     
      
