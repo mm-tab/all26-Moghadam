@@ -10,6 +10,8 @@ import org.team100.lib.logging.LoggerFactory;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 import org.team100.lib.motor.ctre.KrakenX44Motor;
 import org.team100.lib.motor.rev.NeoCANSparkMotor;
 import org.team100.lib.util.Startup;
@@ -82,7 +84,13 @@ public class Robot extends TimedRobot100 {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+
+    Takt.update();
+    Cache.refresh();
+    CommandScheduler.getInstance().run();
+    LogPoller.log();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -121,7 +129,9 @@ public class Robot extends TimedRobot100 {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    m_motor.setDutyCycle(0.1);
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
